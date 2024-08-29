@@ -1,7 +1,7 @@
 # SkyFitnessPro
 В этом репозитории реализовано Фитнес приложение SkyFitnessPro
 
-Проект задеплоен на
+Проект задеплоен на Netlify - https://bucolic-faun-11520b.netlify.app
 
 ## Разработка
 
