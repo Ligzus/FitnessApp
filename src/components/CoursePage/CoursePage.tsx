@@ -1,9 +1,6 @@
-import Header from "../Header/Header";
-
 function CoursePage() {
     return (
         <div>
-            <Header />
             <div>
                 <div className="w-full h-[310px] bg-[#FFC700] flex justify-between pr-[70px] rounded-[30px] mt-[60px]">
                     <p className="text-white text-[60px] font-bold p-[40px]">Йога</p>   

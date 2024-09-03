@@ -1,10 +1,8 @@
 import Card from "../../components/Card/Card";
-import Header from "../../components/Header/Header";
 
 function Main() {
 	return (
 		<>
-			<Header />
 			<div className="description flex flex-row justify-between h-[120px] mt-[60px] mb-[50px]">
 				<h1 className="text-[60px] font-medium text-left leading-none">
 					Начните заниматься спортом и улучшите качество жизни

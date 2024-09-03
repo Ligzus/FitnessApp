@@ -1,10 +1,8 @@
 import UserCards from "../Card/UserCards/UserCards";
-import Header from "../Header/Header";
 
 function Profile() {
     return (
         <div>
-            <Header />
             <div className="mt-[60px]">
                 <h2 className="text-[40px] mb-[40px] font-medium text-left leading-none">
                     Профиль
