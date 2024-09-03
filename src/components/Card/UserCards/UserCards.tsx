@@ -32,17 +32,17 @@ function UserCards() {
 						</svg>
 						Сложность
 					</p>
-                    <div className="w-full h-[36px] flex flex-col justify-center gap-[10px] opacity-100 mt-[20px]">
-                        <div className="text-lg text-start">Прогресс 40%</div>
-                        <div className="relative w-full h-[6px] bg-gray-300 rounded-full">
-                            <div className="absolute top-0 left-0 h-[6px] bg-[#00C1FF] w-[40%]"></div>
-                        </div>
-                    </div>
-                    <div className="w-[300px] items-center mt-[40px]">
-                        <button className="w-[192px] h-[52px] bg-[#BCEC30] rounded-[46px] hover:bg-[#C6FF00] active:bg-[#000000] active:text-[#FFFFFF] text-lg">
-                            Продолжить
-                        </button>
-                    </div>
+					<div className="w-full h-[36px] flex flex-col justify-center gap-[10px] opacity-100 mt-[20px]">
+						<div className="text-lg text-start">Прогресс 40%</div>
+						<div className="relative w-full h-[6px] bg-gray-300 rounded-full">
+							<div className="absolute top-0 left-0 h-[6px] bg-[#00C1FF] w-[40%]"></div>
+						</div>
+					</div>
+					<div className="w-[300px] items-center mt-[40px]">
+						<button className="w-[192px] h-[52px] bg-[#BCEC30] rounded-[46px] hover:bg-[#C6FF00] active:bg-[#000000] active:text-[#FFFFFF] text-lg">
+							Продолжить
+						</button>
+					</div>
 				</div>
 			</div>
 		</div>
