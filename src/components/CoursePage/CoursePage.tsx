@@ -55,7 +55,7 @@ function CoursePage() {
 			</div>
 
 			<div className="relative">
-				<div className="mt-[102px] bg-white flex relative rounded-[30px] overflow-hidden">
+				<div className="mt-[102px] bg-white flex relative rounded-[30px] overflow-hidden shadow-[0px_4px_67px_-12px_#00000021]">
 					<div className="p-[40px] h-[486px]">
 						<div className="w-[437px]">
 							<h2 className="pr-[40px] text-[56px] font-medium text-left leading-none mb-[28px]">
