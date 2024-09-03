@@ -1,6 +1,13 @@
+import { useState } from "react";
 import UserCards from "../Card/UserCards/UserCards";
+import PasswordChange from "../Modal/PasswordChange/PasswordChange";
 
 function Profile() {
+	const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false);
+
+	const openPasswordModal = () => setIsPasswordModalOpen(true);
+	const closePasswordModal = () => setIsPasswordModalOpen(false);
+
 	return (
 		<div>
 			<div className="mt-[60px]">
@@ -20,7 +27,10 @@ function Profile() {
 						</div>
 
 						<div className="flex gap-[10px]">
-							<button className="w-[192px] h-[52px] bg-[#BCEC30] rounded-[46px] hover:bg-[#C6FF00] active:bg-[#000000] active:text-[#FFFFFF] text-lg">
+							<button
+								className="w-[192px] h-[52px] bg-[#BCEC30] rounded-[46px] hover:bg-[#C6FF00] active:bg-[#000000] active:text-[#FFFFFF] text-lg"
+								onClick={openPasswordModal}
+							>
 								Изменить пароль
 							</button>
 							<button className="w-[192px] h-[52px] border border-black bg-[#ffffff] rounded-[46px] hover:bg-[#E9ECED] active:bg-[#000000] active:text-[#FFFFFF] text-lg">
@@ -39,6 +49,8 @@ function Profile() {
 					<UserCards />
 				</div>
 			</div>
+
+			{isPasswordModalOpen && <PasswordChange closeModal={closePasswordModal} />}
 		</div>
 	);
 }

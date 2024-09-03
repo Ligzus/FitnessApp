@@ -10,7 +10,7 @@ function App() {
 	const [isModalOpen, setIsModalOpen] = useState(false);
 
 	const openModal = () => setIsModalOpen(true);
-	const closeModal = () => setIsModalOpen(false); // Функция для закрытия модального окна
+	const closeModal = () => setIsModalOpen(false);
 
 	return (
 		<Router>
