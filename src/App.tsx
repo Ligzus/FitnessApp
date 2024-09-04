@@ -13,17 +13,17 @@ function App() {
 	const closeModal = () => setIsModalOpen(false);
 
 	return (
-			<Router>
-				<div>
-					<Header openModal={openModal} />
-					<Routes>
-						<Route path="/" element={<Main />} />
-						<Route path="/profile" element={<Profile />} />
-						<Route path="/course" element={<CoursePage />} />
-					</Routes>
-					{isModalOpen && <AuthModal closeModal={closeModal} />}
-				</div>
-			</Router>
+		<Router>
+			<div>
+				<Header openModal={openModal} />
+				<Routes>
+					<Route path="/" element={<Main />} />
+					<Route path="/profile" element={<Profile />} />
+					<Route path="/course" element={<CoursePage />} />
+				</Routes>
+				{isModalOpen && <AuthModal closeModal={closeModal} />}
+			</div>
+		</Router>
 	);
 }
 

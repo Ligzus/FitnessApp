@@ -14,7 +14,14 @@ const SaveTrainingProgressModal: React.FC<ModalProps> = ({ closeModal }) => {
 				<div className="flex flex-col items-center gap-8 w-[280px] h-[auto]">
 					<h2 className="text-[32px] font-medium text-center">Ваш прогресс засчитан!</h2>
 
-					<svg className="mb-[10px]" width="57" height="58" viewBox="0 0 57 58" fill="none" xmlns="http://www.w3.org/2000/svg">
+					<svg
+						className="mb-[10px]"
+						width="57"
+						height="58"
+						viewBox="0 0 57 58"
+						fill="none"
+						xmlns="http://www.w3.org/2000/svg"
+					>
 						<path
 							fillRule="evenodd"
 							clipRule="evenodd"

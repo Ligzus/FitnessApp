@@ -25,4 +25,10 @@
     <symbol id='icon-minus' width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path fill-rule="evenodd" clip-rule="evenodd" d="M15.9998 29.3333C23.3636 29.3333 29.3332 23.3638 29.3332 16C29.3332 8.63616 23.3636 2.66663 15.9998 2.66663C8.63604 2.66663 2.6665 8.63616 2.6665 16C2.6665 23.3638 8.63604 29.3333 15.9998 29.3333ZM9.33317 14.6666V17.3333H22.6665V14.6666H9.33317Z" fill="white"/>
     </symbol>
+    <symbol id='icon-check' width="20" height="21" viewBox="0 0 20 21" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path fill-rule="evenodd" clip-rule="evenodd" d="M10 20.5C15.5228 20.5 20 16.0228 20 10.5C20 4.97715 15.5228 0.5 10 0.5C4.47715 0.5 0 4.97715 0 10.5C0 16.0228 4.47715 20.5 10 20.5ZM9.91339 14.6459L15.4134 8.14594L13.8866 6.85406L9.1373 12.4669L6.40258 9.3415L4.89742 10.6585L8.39742 14.6585C8.58922 14.8777 8.86704 15.0024 9.15829 15C9.44953 14.9976 9.72525 14.8683 9.91339 14.6459Z" fill="#BCEC30"/>
+    </symbol>
+    <symbol id='icon-uncheck' width="20" height="21" viewBox="0 0 20 21" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="10" cy="10.5" r="9.5" stroke="black"/>
+    </symbol>  
 </svg>
