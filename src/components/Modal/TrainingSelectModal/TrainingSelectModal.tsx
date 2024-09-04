@@ -22,7 +22,7 @@ const TrainingSelectModal: React.FC<ModalProps> = ({ closeModal, onSubmit }) => 
 							<svg className="w-[32px] h-[32px]">
 								<use xlinkHref="./icon/sprite.svg#icon-check" />
 							</svg>
-							<Link className="text-[18px]" to={"/"}>
+							<Link className="text-[18px]" to={"/training"}>
 								Утренняя практика
 								<p className="text-[14px] py-[10px]">Йога на каждый день / 1 день</p>
 							</Link>
@@ -32,7 +32,7 @@ const TrainingSelectModal: React.FC<ModalProps> = ({ closeModal, onSubmit }) => 
 							<svg className="w-[32px] h-[32px]">
 								<use xlinkHref="./icon/sprite.svg#icon-check" />
 							</svg>
-							<Link className="text-[18px]" to={"/"}>
+							<Link className="text-[18px]" to={"/training"}>
 								Красота и здоровье
 								<p className="text-[14px] py-[10px]">Йога на каждый день / 2 день</p>
 							</Link>
@@ -42,7 +42,7 @@ const TrainingSelectModal: React.FC<ModalProps> = ({ closeModal, onSubmit }) => 
 							<svg className="w-[32px] h-[32px]">
 								<use xlinkHref="./icon/sprite.svg#icon-uncheck" />
 							</svg>
-							<Link className="text-[18px]" to={"/"}>
+							<Link className="text-[18px]" to={"/training"}>
 								Асаны стоя
 								<p className="text-[14px] py-[10px]">Йога на каждый день / 3 день</p>
 							</Link>
@@ -52,7 +52,7 @@ const TrainingSelectModal: React.FC<ModalProps> = ({ closeModal, onSubmit }) => 
 							<svg className="w-[32px] h-[32px]">
 								<use xlinkHref="./icon/sprite.svg#icon-uncheck" />
 							</svg>
-							<Link className="text-[18px]" to={"/"}>
+							<Link className="text-[18px]" to={"/training"}>
 								Растягиваем мышцы бедра
 								<p className="text-[14px] py-[10px]">Йога на каждый день / 4 день</p>
 							</Link>
@@ -62,7 +62,7 @@ const TrainingSelectModal: React.FC<ModalProps> = ({ closeModal, onSubmit }) => 
 							<svg className="w-[32px] h-[32px]">
 								<use xlinkHref="./icon/sprite.svg#icon-uncheck" />
 							</svg>
-							<Link className="text-[18px]" to={"/"}>
+							<Link className="text-[18px]" to={"/training"}>
 								Гибкость спины
 								<p className="text-[14px] py-[10px]">Йога на каждый день / 5 день</p>
 							</Link>
@@ -72,7 +72,7 @@ const TrainingSelectModal: React.FC<ModalProps> = ({ closeModal, onSubmit }) => 
 							<svg className="w-[32px] h-[32px]">
 								<use xlinkHref="./icon/sprite.svg#icon-uncheck" />
 							</svg>
-							<Link className="text-[18px]" to={"/"}>
+							<Link className="text-[18px]" to={"/training"}>
 								Асаны стоя
 								<p className="text-[14px] py-[10px]">Йога на каждый день / 3 день</p>
 							</Link>
@@ -82,7 +82,7 @@ const TrainingSelectModal: React.FC<ModalProps> = ({ closeModal, onSubmit }) => 
 							<svg className="w-[32px] h-[32px]">
 								<use xlinkHref="./icon/sprite.svg#icon-uncheck" />
 							</svg>
-							<Link className="text-[18px]" to={"/"}>
+							<Link className="text-[18px]" to={"/training"}>
 								Растягиваем мышцы бедра
 								<p className="text-[14px] py-[10px]">Йога на каждый день / 4 день</p>
 							</Link>
@@ -92,7 +92,7 @@ const TrainingSelectModal: React.FC<ModalProps> = ({ closeModal, onSubmit }) => 
 							<svg className="w-[32px] h-[32px]">
 								<use xlinkHref="./icon/sprite.svg#icon-uncheck" />
 							</svg>
-							<Link className="text-[18px]" to={"/"}>
+							<Link className="text-[18px]" to={"/training"}>
 								Гибкость спины
 								<p className="text-[14px] py-[10px]">Йога на каждый день / 5 день</p>
 							</Link>

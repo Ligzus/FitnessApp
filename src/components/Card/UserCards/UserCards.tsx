@@ -1,4 +1,14 @@
+import { useState } from "react";
+import TrainingSelectModal from "../../Modal/TrainingSelectModal/TrainingSelectModal";
+
 function UserCards() {
+	const [isTrainingSelectModalOpen, setTrainingSelectModalOpen] = useState(false);
+
+	const openTrainingSelectModal = () => setTrainingSelectModalOpen(true);
+	const closeTrainingSelectModal = () => setTrainingSelectModalOpen(false);
+
+
+
 	return (
 		<div className="card w-[360px] bg-white rounded-[30px] flex flex-col gap-6 shadow-[0_4px_67px_-12px_rgba(0,0,0,0.13)]">
 			<div className="cardImage relative">
@@ -39,9 +49,13 @@ function UserCards() {
 						</div>
 					</div>
 					<div className="w-[300px] items-center mt-[40px]">
-						<button className="w-[192px] h-[52px] bg-[#BCEC30] rounded-[46px] hover:bg-[#C6FF00] active:bg-[#000000] active:text-[#FFFFFF] text-lg">
+						<button
+							onClick={openTrainingSelectModal}
+							className="w-[192px] h-[52px] bg-[#BCEC30] rounded-[46px] hover:bg-[#C6FF00] active:bg-[#000000] active:text-[#FFFFFF] text-lg"
+						>
 							Продолжить
 						</button>
+						{isTrainingSelectModalOpen && <TrainingSelectModal closeModal={closeTrainingSelectModal} onSubmit={closeTrainingSelectModal}/>}
 					</div>
 				</div>
 			</div>
