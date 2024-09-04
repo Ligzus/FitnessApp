@@ -13,7 +13,6 @@ function App() {
 	const closeModal = () => setIsModalOpen(false);
 
 	return (
-		<>
 			<Router>
 				<div>
 					<Header openModal={openModal} />
@@ -25,7 +24,6 @@ function App() {
 					{isModalOpen && <AuthModal closeModal={closeModal} />}
 				</div>
 			</Router>
-		</>
 	);
 }
 
