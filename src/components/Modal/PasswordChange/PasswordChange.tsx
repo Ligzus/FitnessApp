@@ -36,7 +36,7 @@ const PasswordChange: React.FC<ModalProps> = ({ closeModal, onSubmit }) => {
 					<div className="flex flex-col items-center gap-4 w-[280px]">
 						<button
 							className="flex text-black text-lg font-normal flex-row justify-center items-center p-4 gap-2 w-full h-[52px] bg-[#BCEC30] hover:bg-[#C6FF00] active:bg-[#000000] active:text-[#FFFFFF] rounded-[46px]"
-							onClick={onSubmit} // Вызываем onSubmit при нажатии
+							onClick={onSubmit}
 						>
 							Подтвердить
 						</button>
