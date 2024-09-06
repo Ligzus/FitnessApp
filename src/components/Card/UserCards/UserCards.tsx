@@ -7,10 +7,8 @@ function UserCards() {
 	const openTrainingSelectModal = () => setTrainingSelectModalOpen(true);
 	const closeTrainingSelectModal = () => setTrainingSelectModalOpen(false);
 
-
-
 	return (
-		<div className="card w-[360px] bg-white rounded-[30px] flex flex-col gap-6 shadow-[0_4px_67px_-12px_rgba(0,0,0,0.13)]">
+		<div className="card w-[343px] sm:w-[360px] bg-white rounded-[30px] flex flex-col gap-6 shadow-[0_4px_67px_-12px_rgba(0,0,0,0.13)]">
 			<div className="cardImage relative">
 				<img className="" src="./yoga-card.png" alt="yoga" />
 				<button className="addCourse w-[32px] h-[32px] absolute top-5 right-5" title="Удалить курс">
@@ -19,7 +17,7 @@ function UserCards() {
 					</svg>
 				</button>
 			</div>
-			<div className="parameters flex flex-col gap-5 mx-[30px]">
+			<div className="flex flex-col gap-5 mx-[21px] sm:mx-[30px]">
 				<div className="courseTitle flex justify-start">
 					<h3 className="text-[32px] font-medium">Йога</h3>
 				</div>
@@ -48,14 +46,16 @@ function UserCards() {
 							<div className="absolute top-0 left-0 h-[6px] bg-[#00C1FF] w-[40%]"></div>
 						</div>
 					</div>
-					<div className="w-[300px] items-center mt-[40px]">
+					<div className="items-center mt-[40px]">
 						<button
 							onClick={openTrainingSelectModal}
-							className="w-[192px] h-[52px] bg-[#BCEC30] rounded-[46px] hover:bg-[#C6FF00] active:bg-[#000000] active:text-[#FFFFFF] text-lg"
+							className="w-[300px] h-[52px] bg-[#BCEC30] rounded-[46px] hover:bg-[#C6FF00] active:bg-[#000000] active:text-[#FFFFFF] text-lg"
 						>
 							Продолжить
 						</button>
-						{isTrainingSelectModalOpen && <TrainingSelectModal closeModal={closeTrainingSelectModal} onSubmit={closeTrainingSelectModal}/>}
+						{isTrainingSelectModalOpen && (
+							<TrainingSelectModal closeModal={closeTrainingSelectModal} onSubmit={closeTrainingSelectModal} />
+						)}
 					</div>
 				</div>
 			</div>

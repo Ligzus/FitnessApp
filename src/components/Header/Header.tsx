@@ -30,17 +30,24 @@ const Header: React.FC<HeaderProps> = ({ openModal }) => {
 		<div className="header flex flex-row justify-between relative">
 			<Link to={"/"} className="headerLogo">
 				<img className="w-56 h-9 mb-[15px]" src="./logo.svg" alt="logo" />
-				<p className="text-lg opacity-50">Онлайн-тренировки для занятий дома</p>
+				<p className="hidden sm:block text-lg opacity-50">Онлайн-тренировки для занятий дома</p>
 			</Link>
 			<div className="headerButton">
 				{/* Эта часть кода будет отображаться после реализации логики логина и появления пользователя в состоянии: */}
 
-				<div onClick={toggleModal} className="flex gap-[16px] items-center cursor-pointer">
+				<div onClick={toggleModal} className="flex gap-[12px] items-center cursor-pointer">
 					<img src="./profile-photo-mini.svg" alt="profile-photo-mini" />
 
-					<p className="text-[24px]">Сергей</p>
+					<p className="hidden sm:block text-[24px]">Сергей</p>
 
-					<svg width="14" height="9" viewBox="0 0 14 9" fill="none" xmlns="http://www.w3.org/2000/svg">
+					<svg
+						className="hidden sm:block"
+						width="14"
+						height="9"
+						viewBox="0 0 14 9"
+						fill="none"
+						xmlns="http://www.w3.org/2000/svg"
+					>
 						<path d="M12.3553 1.03308L6.67773 6.7107L1.00012 1.03308" stroke="black" strokeWidth="2" />
 					</svg>
 				</div>
@@ -78,7 +85,7 @@ const Header: React.FC<HeaderProps> = ({ openModal }) => {
 
 				<button
 					onClick={openModal}
-					className="bg-[#BCEC30] px-[26px] py-[16px] rounded-[46px] hover:bg-[#C6FF00] active:bg-[#000000] active:text-[#FFFFFF] text-lg"
+					className="bg-[#BCEC30] px-[16px] py-[8px] sm:px-[26px] rounded-[46px] hover:bg-[#C6FF00] active:bg-[#000000] active:text-[#FFFFFF] text-[18px] sm:text-lg sm:h-[52px]"
 				>
 					Войти
 				</button>
