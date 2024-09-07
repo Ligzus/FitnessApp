@@ -6,13 +6,20 @@
 @layer base {
 	#root {
 		font-family: "Roboto", sans-serif;
-		max-width: 1160px;
+		max-width: 1220px;
 		margin: 0 auto;
 		text-align: center;
-		padding: 50px 0 50px 0;
+		padding: 50px 30px 50px 30px;
+		overflow: hidden;
 	}
 
 	body {
 		background-color: #fafafa;
+	}
+
+	@media (max-width: 639px) {
+		#root {
+			padding: 40px 16px 40px 16px;
+		}
 	}
 }
