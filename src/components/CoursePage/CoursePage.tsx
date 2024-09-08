@@ -101,7 +101,7 @@ function CoursePage() {
 					</div>
 
 					<img
-						className="hidden absolute right-[-15px] top-[20px] z-10 lg:block lg:opacity-[20%] xl:opacity-[100%]"
+						className="hidden absolute right-[15px] top-[50px] z-10 lg:block lg:opacity-[20%] xl:opacity-[100%]"
 						src="./lines.svg"
 						alt="lines"
 					/>
