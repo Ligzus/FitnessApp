@@ -121,7 +121,7 @@ function CoursePage() {
 					fill="none"
 					xmlns="http://www.w3.org/2000/svg"
 				>
-					<path d="M3 46.0947C6 37.5947 20.2 17.1947 53 3.59473" stroke="black" stroke-width="6" />
+					<path d="M3 46.0947C6 37.5947 20.2 17.1947 53 3.59473" stroke="black" strokeWidth="6" />
 				</svg>
 				<svg
 					className="sm:hidden top-[-135px] right-[-15px] absolute z-10"
@@ -134,7 +134,7 @@ function CoursePage() {
 					<path
 						d="M306.773 252.122C592.337 -146.318 16.1411 27.4986 0.857649 155.11C-2.75302 185.258 38.2014 194.154 99.6254 180.667C161.049 167.18 -99.0882 266.476 20.3958 284.721"
 						stroke="#C6FF00"
-						stroke-width="10.1395"
+						strokeWidth="10.1395"
 					/>
 				</svg>
 
@@ -146,7 +146,7 @@ function CoursePage() {
 					fill="none"
 					xmlns="http://www.w3.org/2000/svg"
 				>
-					<path d="M3 46.0947C6 37.5947 20.2 17.1947 53 3.59473" stroke="black" stroke-width="6" />
+					<path d="M3 46.0947C6 37.5947 20.2 17.1947 53 3.59473" stroke="black" strokeWidth="6" />
 				</svg>
 				<svg
 					className="hidden sm:block lg:hidden opacity-[30%] top-[-185px] right-[-15px] absolute"
@@ -159,7 +159,7 @@ function CoursePage() {
 					<path
 						d="M306.773 252.122C592.337 -146.318 16.1411 27.4986 0.857649 155.11C-2.75302 185.258 38.2014 194.154 99.6254 180.667C161.049 167.18 -99.0882 266.476 20.3958 284.721"
 						stroke="#C6FF00"
-						stroke-width="10.1395"
+						strokeWidth="10.1395"
 					/>
 				</svg>
 			</div>
