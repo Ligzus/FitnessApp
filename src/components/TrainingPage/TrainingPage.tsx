@@ -16,17 +16,17 @@ function TrainingPage() {
 	const handleSaveTrainingProgress = () => setIsSaveTrainingProgressModalOpen(true);
 
 	return (
-		<div className="flex flex-col mt-[60px] gap-[40px]">
+		<div className="flex flex-col mt-[60px] gap-[24px] sm:gap-[40px]">
 			<div className="flex flex-col gap-[24px]">
-				<h2 className="text-[60px] font-medium text-left leading-none">Йога</h2>
-				<p className="text-[32px] text-left leading-none underline decoration-solid">
+				<h2 className="text-[24px] sm:text-[60px] font-medium text-left leading-none">Йога</h2>
+				<p className="text-[18px] sm:text-[32px] text-left leading-none underline decoration-solid">
 					Красота и здоровье / Йога на каждый день / 2 день
 				</p>
 			</div>
 
 			<div className="flex bg-[#FFFFFF] rounded-[28px]">
 				<iframe
-					className="w-[1160px] h-[639px] rounded-[30px]"
+					className="w-[343px] h-[189px] sm:w-[1160px] sm:h-[639px] rounded-[30px]"
 					src="https://www.youtube.com/embed/v-xTLFDhoD0"
 				></iframe>
 			</div>
@@ -46,7 +46,7 @@ function TrainingPage() {
 				</div>
 				<button
 					onClick={openTrainingProgressModal}
-					className="flex w-[320px] text-black text-lg font-normal flex-row justify-center items-center p-4 gap-2 w-full h-[52px] bg-[#BCEC30] hover:bg-[#C6FF00] active:bg-[#000000] active:text-[#FFFFFF] rounded-[46px]"
+					className="flex w-[320px] text-black text-lg font-normal flex-row justify-center items-center p-4 gap-2 h-[52px] bg-[#BCEC30] hover:bg-[#C6FF00] active:bg-[#000000] active:text-[#FFFFFF] rounded-[46px]"
 				>
 					Заполнить свой прогресс
 				</button>
