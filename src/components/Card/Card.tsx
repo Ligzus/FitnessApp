@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 function Card() {
 	return (
-		<Link to={'/course'} className="card w-[343px] sm:w-[360px] bg-white rounded-[30px] flex flex-col gap-6 shadow-[0_4px_67px_-12px_rgba(0,0,0,0.13)]">
+		<Link to={'/course'} className="card w-[343px] lg:w-[360px] bg-white rounded-[30px] flex flex-col gap-6 shadow-[0_4px_67px_-12px_rgba(0,0,0,0.13)]">
 			<div className="cardImage relative">
 				<img className="" src="./yoga-card.png" alt="yoga" />
 				<button className="addCourse w-[32px] h-[32px] absolute top-5 right-5" title="Добавить курс">

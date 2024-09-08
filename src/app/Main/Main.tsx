@@ -11,12 +11,12 @@ function Main() {
 	return (
 		<>
 			<div id="top" className="description flex flex-row mb-[34px] justify-between h-[120px] mt-[39px] sm:mt-[60px] sm:mb-[50px]">
-				<h1 className="text-[32px] sm:text-[60px] font-medium text-left leading-none">
+				<h1 className="text-[32px] sm:text-[42px] xl:text-[60px] font-medium text-left leading-none">
 					Начните заниматься спортом и улучшите качество жизни
 				</h1>
-				<img className="h-[120px] hidden sm:block" src="./description-img.svg" alt="description" />
+				<img className="h-[120px] hidden lg:block" src="./description-img.svg" alt="description" />
 			</div>
-			<div className="coursCards flex flex-col justify-center sm:justify-normal sm:flex-row sm:flex-wrap gap-6 sm:gap-10">
+			<div className="coursCards flex justify-center xl:justify-start flex-wrap gap-6 sm:gap-10">
 				<Card />
 				<Card />
 				<Card />
