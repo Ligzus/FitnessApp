@@ -1,6 +1,7 @@
+import { Link } from "react-router-dom";
 function Card() {
 	return (
-		<div className="card w-[360px] bg-white rounded-[30px] flex flex-col gap-6 shadow-[0_4px_67px_-12px_rgba(0,0,0,0.13)]">
+		<Link to={'/course'} className="card w-[343px] lg:w-[360px] bg-white rounded-[30px] flex flex-col gap-6 shadow-[0_4px_67px_-12px_rgba(0,0,0,0.13)]">
 			<div className="cardImage relative">
 				<img className="" src="./yoga-card.png" alt="yoga" />
 				<button className="addCourse w-[32px] h-[32px] absolute top-5 right-5" title="Добавить курс">
@@ -11,7 +12,7 @@ function Card() {
 			</div>
 			<div className="parameters flex flex-col gap-5 mx-[30px]">
 				<div className="courseTitle flex justify-start">
-					<h3 className="text-[32px] font-medium">Йога</h3>
+					<h3 className="text-[24px] sm:text-[32px] font-medium">Йога</h3>
 				</div>
 				<div className="courseParams flex flex-row flex-wrap gap-1.5 mb-[15px]">
 					<p className="parameter bg-[#F7F7F7] p-2.5 rounded-full flex flex-row gap-1.5 items-center">
@@ -34,7 +35,7 @@ function Card() {
 					</p>
 				</div>
 			</div>
-		</div>
+		</Link>
 	);
 }
 

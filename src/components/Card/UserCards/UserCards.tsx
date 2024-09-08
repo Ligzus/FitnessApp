@@ -9,9 +9,9 @@ function UserCards() {
 
 	return (
 		<div className="card w-[343px] sm:w-[360px] bg-white rounded-[30px] flex flex-col gap-6 shadow-[0_4px_67px_-12px_rgba(0,0,0,0.13)]">
+			<img className="" src="./yoga-card.png" alt="yoga" />
 			<div className="cardImage relative">
-				<img className="" src="./yoga-card.png" alt="yoga" />
-				<button className="addCourse w-[32px] h-[32px] absolute top-5 right-5" title="Удалить курс">
+				<button className="addCourse w-[32px] h-[32px] absolute top-[-330px] right-5" title="Удалить курс">
 					<svg className="w-[32px] h-[32px]">
 						<use xlinkHref="./icon/sprite.svg#icon-minus" />
 					</svg>
