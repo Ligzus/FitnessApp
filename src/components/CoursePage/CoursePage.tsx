@@ -66,9 +66,9 @@ function CoursePage() {
 
 			<div className="relative">
 				<div className="mt-[156px] sm:mt-[102px] bg-white flex relative rounded-[20px] overflow-hidden shadow-[0px_4px_67px_-12px_#00000021] z-30">
-					<div className="p-[30px] sm:p-[40px] h-[400px] lg:h-[486px] z-20">
+					<div className="p-[30px] sm:p-[40px] h-auto lg:h-[486px] z-20">
 						<div className="w-full lg:w-[437px]">
-							<h2 className="lg:pr-[40px] text-[32px] sm:text-[34px] md:text-[46px] md:text-[56px] font-medium text-left leading-none mb-[20px] sm:mb-[28px]">
+							<h2 className="lg:pr-[40px] text-[32px] sm:text-[34px] md:text-[46px] lg:text-[56px] font-medium text-left leading-none mb-[20px] sm:mb-[28px]">
 								Начните путь к новому телу
 							</h2>
 							<div className="text-left text-[18px] sm:text-[22px] md:text-[24px] opacity-60">
