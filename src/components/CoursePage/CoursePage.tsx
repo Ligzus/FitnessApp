@@ -64,8 +64,8 @@ function CoursePage() {
 								<div className="overflow-hidden rounded-[20px]">
 									<img
 										src={course.images.cardImage}
-										alt="yoga-card"
-										className={id === "q02a6i" || "fi67sm" ? "mb-10" : ""}
+										alt="card-img"
+										className={id === "fi67sm" ? "mb-10" : id === "q02a6i" ? "mb-10" : "md:mr-[70px]"}
 									/>
 								</div>
 							</div>
@@ -79,7 +79,7 @@ function CoursePage() {
 								<div className="overflow-hidden relative rounded-[20px]">
 									<img
 										src={course.images.courseImage}
-										alt="yoga-card"
+										alt="card-img"
 										className={
 											id === "ab1c3f" ? "h-[120%] sm:mt-[-80px]" : id === "q02a6i" || "fi67sm" ? "" : "md:mr-[70px]"
 										}
