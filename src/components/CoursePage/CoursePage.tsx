@@ -75,7 +75,9 @@ function CoursePage() {
 								className={`hidden sm:flex w-full h-[200px] sm:h-[310px] justify-between rounded-[20px] mt-[40px] sm:mt-[60px]`}
 								style={{ backgroundColor: bgColor }}
 							>
-								<p className="text-white text-[45px] text-start md:text-[60px] font-bold p-[30px] md:p-[40px]">{course.nameRU}</p>
+								<p className="text-white text-[45px] text-start md:text-[60px] font-bold p-[30px] md:p-[40px]">
+									{course.nameRU}
+								</p>
 								<div className="overflow-hidden relative rounded-[20px]">
 									<img
 										src={course.images.courseImage}

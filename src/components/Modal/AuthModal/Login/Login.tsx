@@ -1,4 +1,6 @@
-import React from "react";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import React, { useState } from "react";
+import { auth } from "../../../../utils/firebase";
 
 interface ModalProps {
 	closeModal: () => void;
@@ -6,6 +8,23 @@ interface ModalProps {
 }
 
 const Login: React.FC<ModalProps> = ({ closeModal, toggleModal }) => {
+	const [email, setEmail] = useState("");
+	const [password, setPassword] = useState("");
+	const [error, setError] = useState("");
+
+	function login() {
+		signInWithEmailAndPassword(auth, email, password)
+			.then((user) => {
+				console.log(user);
+				setEmail("");
+				setPassword("");
+			})
+			.catch((error) => {
+				if (error.message === "Firebase: Error (auth/invalid-email).") {
+					setError("email введен некорректно");
+				}
+			});
+	}
 	return (
 		<div className="fixed inset-0 flex justify-center items-center bg-gray-900 bg-opacity-50" onClick={closeModal}>
 			<div
@@ -21,6 +40,8 @@ const Login: React.FC<ModalProps> = ({ closeModal, toggleModal }) => {
 								type="email"
 								placeholder="Эл. почта"
 								className="text-[18px] w-full h-[49px] text-base font-normal text-black-400 rounded-[8px] p-[18px]"
+								value={email}
+								onChange={(e) => setEmail(e.target.value)}
 							/>
 						</div>
 
@@ -29,12 +50,17 @@ const Login: React.FC<ModalProps> = ({ closeModal, toggleModal }) => {
 								type="password"
 								placeholder="Пароль"
 								className="text-[18px] w-full h-[49px] text-base font-normal text-black-400 rounded-[8px] p-[18px]"
+								value={password}
+								onChange={(e) => setPassword(e.target.value)}
 							/>
 						</div>
 					</div>
 
 					<div className="flex flex-col items-center gap-4 w-[280px]">
-						<button className="flex text-black text-lg font-normal flex-row justify-center items-center p-4 gap-2 w-full h-[52px] bg-[#BCEC30] hover:bg-[#C6FF00] active:bg-[#000000] active:text-[#FFFFFF] rounded-[46px]">
+						<button
+							onClick={login}
+							className="flex text-black text-lg font-normal flex-row justify-center items-center p-4 gap-2 w-full h-[52px] bg-[#BCEC30] hover:bg-[#C6FF00] active:bg-[#000000] active:text-[#FFFFFF] rounded-[46px]"
+						>
 							Войти
 						</button>
 
@@ -44,6 +70,7 @@ const Login: React.FC<ModalProps> = ({ closeModal, toggleModal }) => {
 						>
 							Зарегистрироваться
 						</button>
+						<p>{error ? error : ""}</p>
 					</div>
 				</div>
 			</div>
