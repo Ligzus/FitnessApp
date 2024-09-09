@@ -29,14 +29,14 @@ const Header: React.FC<HeaderProps> = ({ openModal }) => {
 	return (
 		<div className="header flex flex-row justify-between relative">
 			<Link to={"/"} className="headerLogo">
-				<img className="w-56 h-9 mb-[15px]" src="./logo.svg" alt="logo" />
+				<img className="w-56 h-9 mb-[15px]" src="/logo.svg" alt="logo" />
 				<p className="hidden sm:block text-lg opacity-50">Онлайн-тренировки для занятий дома</p>
 			</Link>
 			<div className="headerButton">
 				{/* Эта часть кода будет отображаться после реализации логики логина и появления пользователя в состоянии: */}
 
 				<div onClick={toggleModal} className="flex gap-[12px] items-center cursor-pointer">
-					<img src="./profile-photo-mini.svg" alt="profile-photo-mini" />
+					<img src="/profile-photo-mini.svg" alt="profile-photo-mini" />
 
 					<p className="hidden sm:block text-[24px]">Сергей</p>
 
