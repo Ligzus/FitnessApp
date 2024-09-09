@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { getCourse } from "../../utils/api";
 import { useEffect, useState } from "react";
+
 function Card() {
 	const [isLoaded, setIsLoaded] = useState(false);
 	const [courses, setCourses] = useState<any[]>([]);
@@ -30,12 +31,12 @@ function Card() {
 				<div className="flex justify-center xl:justify-start flex-wrap gap-6 sm:gap-10">
 					{courses.map((course: any) => (
 						<Link
-							to={"/course"}
+							to={`/course/${course._id}`} // Передаем ID курса в URL
 							className="card w-[343px] lg:w-[360px] bg-white rounded-[30px] flex flex-col gap-6 shadow-[0_4px_67px_-12px_rgba(0,0,0,0.13)]"
 							key={course._id}
 						>
 							<div className="cardImage relative">
-								<img className="" src={course.images.cardImage} alt="yoga" />
+								<img className="" src={course.images.cardImage} alt={course.nameRU} />
 								<button className="addCourse w-[32px] h-[32px] absolute top-5 right-5" title="Добавить курс">
 									<svg className="w-[32px] h-[32px]">
 										<use xlinkHref="./icon/sprite.svg#icon-plus" />

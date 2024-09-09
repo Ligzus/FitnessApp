@@ -20,7 +20,7 @@ function App() {
 				<Routes>
 					<Route path="/" element={<Main />} />
 					<Route path="/profile" element={<Profile />} />
-					<Route path="/course" element={<CoursePage />} />
+					<Route path="/course/:id" element={<CoursePage />} />
 					<Route path="/training" element={<TrainingPage />} />
 				</Routes>
 				{isModalOpen && <AuthModal closeModal={closeModal} />}
