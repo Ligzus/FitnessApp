@@ -1,5 +1,7 @@
+import { signOut } from "firebase/auth";
 import React, { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
+import { auth } from "../../utils/firebase";
 
 interface HeaderProps {
 	openModal: () => void;
@@ -57,7 +59,7 @@ const Header: React.FC<HeaderProps> = ({ openModal }) => {
 					ref={modalRef}
 					className={
 						modalVisible
-							? "w-[266px] p-[30px] mt-[24px] bg-white rounded-[28px] absolute right-0 shadow-[0px_4px_67px_-12px_#00000021]"
+							? "w-[266px] p-[30px] mt-[24px] bg-white rounded-[28px] absolute z-20 right-0 shadow-[0px_4px_67px_-12px_#00000021]"
 							: "hidden"
 					}
 				>
@@ -74,12 +76,16 @@ const Header: React.FC<HeaderProps> = ({ openModal }) => {
 							Мой профиль
 						</Link>
 
-						<Link
-							to={"/course"}
+						<button
+							onClick={() =>
+								signOut(auth).then(() => {
+									console.log("succes");
+								})
+							}
 							className="flex text-black text-lg font-normal flex-row justify-center items-center p-4 gap-2 w-full h-[52px] border border-black rounded-[46px] hover:bg-[#E9ECED] active:bg-[#000000] active:text-[#FFFFFF]"
 						>
 							Выйти
-						</Link>
+						</button>
 					</div>
 				</div>
 
