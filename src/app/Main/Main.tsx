@@ -1,3 +1,5 @@
+import { useEffect, useState } from "react";
+import { getCourse } from "../../utils/api";
 import Card from "../../components/Card/Card";
 
 function Main() {
@@ -7,6 +9,26 @@ function Main() {
 			element.scrollIntoView({ behavior: "smooth" });
 		}
 	}
+
+	const [isLoaded, setIsLoaded] = useState(false);
+	const [courses, setCourses] = useState<any[]>([]);
+
+	useEffect(() => {
+		getCourse()
+			.then((data: any) => {
+				let coursesData: any[] = [];
+				for (let i = 0; i < Object.keys(data).length; i++) {
+					coursesData.push(data[Object.keys(data)[i]]);
+				}
+				setCourses(coursesData);
+			})
+			.catch((error: any) => {
+				console.warn(error);
+			})
+			.finally(() => {
+				setIsLoaded(true);
+			});
+	}, []);
 
 	return (
 		<>
@@ -19,7 +41,17 @@ function Main() {
 				</h1>
 				<img className="h-[120px] hidden lg:block" src="./description-img.svg" alt="description" />
 			</div>
-			<Card />
+			{isLoaded ? (
+				<div className="flex justify-center xl:justify-start flex-wrap gap-6 sm:gap-10">
+					{courses.map((course: any) => (
+						<Card key={course._id} courseId={course._id} image={course.images.cardImage} nameRu={course.nameRU} />
+					))}
+				</div>
+			) : (
+				<div>
+					<p>Страница загружается</p>
+				</div>
+			)}
 			<div className="flex flex-row justify-center mt-[34px] mb-[81px]">
 				<button
 					onClick={scrollToCourses}
