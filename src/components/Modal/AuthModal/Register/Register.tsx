@@ -31,6 +31,8 @@ const Register: React.FC<ModalProps> = ({ closeModal, toggleModal }) => {
 					setError("email введен некорректно");
 				} else if (error.message === "Firebase: Password should be at least 6 characters (auth/weak-password).") {
 					setError("Пароль должен быть не менее 6 символов");
+				} else {
+					setError("Ошибка регистрации, попробуйте позже");
 				}
 			});
 	}

@@ -22,6 +22,10 @@ const Login: React.FC<ModalProps> = ({ closeModal, toggleModal }) => {
 			.catch((error) => {
 				if (error.message === "Firebase: Error (auth/invalid-email).") {
 					setError("email введен некорректно");
+				} else if (error.message === "Firebase: Error (auth/invalid-credential).") {
+					setError("Неверный логин или пароль");
+				} else {
+					setError("Ошибка входа, попробуйте позже");
 				}
 			});
 	}
