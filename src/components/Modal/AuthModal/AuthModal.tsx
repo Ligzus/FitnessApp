@@ -17,7 +17,7 @@ const AuthModal: React.FC<AuthModalProps> = ({ closeModal }) => {
 
 	const resetModal = () => {
 		setIsReset((prev) => !prev);
-	}
+	};
 
 	return (
 		<div className="fixed inset-0 flex justify-center items-center bg-gray-900 bg-opacity-50">
@@ -26,13 +26,12 @@ const AuthModal: React.FC<AuthModalProps> = ({ closeModal }) => {
 				onClick={(e) => e.stopPropagation()}
 			>
 				{isReset ? (
-						<ResetPassword closeModal={closeModal}/>
-					) : (isLogin ? (
-						<Login toggleModal={toggleModal} closeModal={closeModal} resetModal={resetModal} />
-					) : (
-						<Register toggleModal={toggleModal} closeModal={closeModal} />
-					))				
-				}
+					<ResetPassword closeModal={closeModal} />
+				) : isLogin ? (
+					<Login toggleModal={toggleModal} closeModal={closeModal} resetModal={resetModal} />
+				) : (
+					<Register toggleModal={toggleModal} closeModal={closeModal} />
+				)}
 			</div>
 		</div>
 	);

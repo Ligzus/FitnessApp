@@ -92,7 +92,7 @@ const Register: React.FC<ModalProps> = ({ closeModal, toggleModal }) => {
 							onClick={toggleModal}
 						>
 							Войти
-						</button>						
+						</button>
 					</div>
 				</div>
 			</div>

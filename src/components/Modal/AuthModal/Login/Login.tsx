@@ -30,7 +30,7 @@ const Login: React.FC<ModalProps> = ({ closeModal, toggleModal, resetModal }) =>
 				}
 			});
 	}
-	
+
 	return (
 		<div className="fixed inset-0 flex justify-center items-center bg-gray-900 bg-opacity-50" onClick={closeModal}>
 			<div
@@ -59,9 +59,9 @@ const Login: React.FC<ModalProps> = ({ closeModal, toggleModal, resetModal }) =>
 								value={password}
 								onChange={(e) => setPassword(e.target.value)}
 							/>
-						</div>	
-						<p>{error ? error : ""}</p>						
-					</div>					
+						</div>
+						<p>{error ? error : ""}</p>
+					</div>
 
 					<div className="flex flex-col items-center gap-2 w-[280px]">
 						<button
@@ -76,10 +76,12 @@ const Login: React.FC<ModalProps> = ({ closeModal, toggleModal, resetModal }) =>
 							onClick={toggleModal}
 						>
 							Зарегистрироваться
-						</button>											
-					</div>			
-					<button className="text-md opacity-[50%] hover:underline mt-[8px] mb-[-8px]" onClick={resetModal}>Забыли пароль?</button>		
-				</div>							
+						</button>
+					</div>
+					<button className="text-md opacity-[50%] hover:underline mt-[8px] mb-[-8px]" onClick={resetModal}>
+						Забыли пароль?
+					</button>
+				</div>
 			</div>
 		</div>
 	);

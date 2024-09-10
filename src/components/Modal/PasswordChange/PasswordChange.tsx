@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import { updatePassword, reauthenticateWithCredential, EmailAuthProvider } from "firebase/auth";
-import { auth } from '../../../utils/firebase';
+import { auth } from "../../../utils/firebase";
 
 interface ModalProps {
 	closeModal: () => void;
@@ -8,9 +8,9 @@ interface ModalProps {
 }
 
 const PasswordChange: React.FC<ModalProps> = ({ closeModal, onSubmit }) => {
-	const [newPassword, setNewPassword] = useState<string>('');
-	const [oldPassword, setOldPassword] = useState<string>('');
-	const [message, setMessage] = useState<string>('');
+	const [newPassword, setNewPassword] = useState<string>("");
+	const [oldPassword, setOldPassword] = useState<string>("");
+	const [message, setMessage] = useState<string>("");
 
 	const handleChangePassword = async (): Promise<void> => {
 		const user = auth.currentUser;
@@ -22,18 +22,14 @@ const PasswordChange: React.FC<ModalProps> = ({ closeModal, onSubmit }) => {
 				await reauthenticateWithCredential(user, credential);
 
 				// Обновление пароля
-				await updatePassword(
-					user, 
-					newPassword
-				).then(() => {
+				await updatePassword(user, newPassword).then(() => {
 					onSubmit();
-				})
-				
+				});
 			} catch (error: any) {
-				setMessage('Ошибка при изменении пароля: ' + error.message);
+				setMessage("Ошибка при изменении пароля: " + error.message);
 			}
 		} else {
-			setMessage('Пользователь не авторизован.');
+			setMessage("Пользователь не авторизован.");
 		}
 	};
 

@@ -5,7 +5,8 @@ function Card({ courseId, image, nameRu }: CardType) {
 	return (
 		<Link
 			to={`/course/${courseId}`} // Передаем ID курса в URL
-			className="card w-[343px] lg:w-[360px] bg-white rounded-[30px] flex flex-col gap-6 shadow-[0_4px_67px_-12px_rgba(0,0,0,0.13)]" key={courseId}
+			className="card w-[343px] lg:w-[360px] bg-white rounded-[30px] flex flex-col gap-6 shadow-[0_4px_67px_-12px_rgba(0,0,0,0.13)]"
+			key={courseId}
 		>
 			<div className="cardImage relative">
 				<img className="" src={image} alt={nameRu} />
