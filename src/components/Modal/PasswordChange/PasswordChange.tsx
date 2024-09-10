@@ -1,4 +1,6 @@
-import React from "react";
+import React, { useState } from "react";
+import { updatePassword, reauthenticateWithCredential, EmailAuthProvider } from "firebase/auth";
+import { auth } from "../../../utils/firebase";
 
 interface ModalProps {
 	closeModal: () => void;
@@ -6,6 +8,31 @@ interface ModalProps {
 }
 
 const PasswordChange: React.FC<ModalProps> = ({ closeModal, onSubmit }) => {
+	const [newPassword, setNewPassword] = useState<string>("");
+	const [oldPassword, setOldPassword] = useState<string>("");
+	const [message, setMessage] = useState<string>("");
+
+	const handleChangePassword = async (): Promise<void> => {
+		const user = auth.currentUser;
+
+		if (user) {
+			try {
+				// Реаутентификация пользователя, если это требуется
+				const credential = EmailAuthProvider.credential(user.email as string, oldPassword);
+				await reauthenticateWithCredential(user, credential);
+
+				// Обновление пароля
+				await updatePassword(user, newPassword).then(() => {
+					onSubmit();
+				});
+			} catch (error: any) {
+				setMessage("Ошибка при изменении пароля: " + error.message);
+			}
+		} else {
+			setMessage("Пользователь не авторизован.");
+		}
+	};
+
 	return (
 		<div className="fixed inset-0 flex justify-center items-center bg-gray-900 bg-opacity-50" onClick={closeModal}>
 			<div
@@ -19,16 +46,20 @@ const PasswordChange: React.FC<ModalProps> = ({ closeModal, onSubmit }) => {
 						<div className="flex flex-row items-center gap-2 w-[280px] h-[52px] border border-gray-300 rounded-[8px]">
 							<input
 								type="password"
-								placeholder="Новый пароль"
+								placeholder="Введите текущий пароль"
 								className="text-[18px] w-full h-[49px] text-base font-normal text-black-400 rounded-[8px] p-[18px]"
+								value={oldPassword}
+								onChange={(e) => setOldPassword(e.target.value)}
 							/>
 						</div>
 
 						<div className="flex flex-row items-center gap-2 w-[280px] h-[52px] border border-gray-300 rounded-[8px]">
 							<input
 								type="password"
-								placeholder="Повторите пароль"
+								placeholder="Введите новый пароль"
 								className="text-[18px] w-full h-[49px] text-base font-normal text-black-400 rounded-[8px] p-[18px]"
+								value={newPassword}
+								onChange={(e) => setNewPassword(e.target.value)}
 							/>
 						</div>
 					</div>
@@ -36,10 +67,11 @@ const PasswordChange: React.FC<ModalProps> = ({ closeModal, onSubmit }) => {
 					<div className="flex flex-col items-center gap-4 w-[280px]">
 						<button
 							className="flex text-black text-lg font-normal flex-row justify-center items-center p-4 gap-2 w-full h-[52px] bg-[#BCEC30] hover:bg-[#C6FF00] active:bg-[#000000] active:text-[#FFFFFF] rounded-[46px]"
-							onClick={onSubmit}
+							onClick={handleChangePassword}
 						>
 							Подтвердить
 						</button>
+						{message && <p>{message}</p>}
 					</div>
 				</div>
 			</div>

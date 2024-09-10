@@ -46,7 +46,7 @@ const Register: React.FC<ModalProps> = ({ closeModal, toggleModal }) => {
 				<img src="/logo.svg" alt="logo" />
 
 				<div className="flex flex-col items-center gap-8 w-[280px] h-[auto]">
-					<div className="flex flex-col items-start gap-[10px] w-[280px]">
+					<div className="flex flex-col items-center gap-[10px] w-[280px]">
 						<div className="flex flex-row items-center gap-2 w-[280px] h-[52px] border border-gray-300 rounded-[8px]">
 							<input
 								type="email"
@@ -76,9 +76,10 @@ const Register: React.FC<ModalProps> = ({ closeModal, toggleModal }) => {
 								onChange={(e) => setcopyPassword(e.target.value)}
 							/>
 						</div>
+						<p>{error ? error : ""}</p>
 					</div>
 
-					<div className="flex flex-col items-center gap-4 w-[280px]">
+					<div className="flex flex-col items-center gap-2 w-[280px]">
 						<button
 							onClick={register}
 							className="flex text-black text-lg font-normal flex-row justify-center items-center p-4 gap-2 w-full h-[52px] bg-[#BCEC30] hover:bg-[#C6FF00] active:bg-[#000000] active:text-[#FFFFFF] rounded-[46px]"
@@ -92,7 +93,6 @@ const Register: React.FC<ModalProps> = ({ closeModal, toggleModal }) => {
 						>
 							Войти
 						</button>
-						<p>{error ? error : ""}</p>
 					</div>
 				</div>
 			</div>
