@@ -40,7 +40,7 @@ const Login: React.FC<ModalProps> = ({ closeModal, toggleModal, resetModal }) =>
 				<img src="/logo.svg" alt="logo" />
 
 				<div className="flex flex-col items-center w-[280px] h-[auto]">
-					<div className="flex flex-col items-center gap-[10px] w-[280px] mb-7">
+					<div className="flex flex-col items-center gap-[10px] w-[280px] mb-6">
 						<div className="flex flex-row items-center gap-2 w-[280px] h-[52px] border border-gray-300 rounded-[8px]">
 							<input
 								type="email"
@@ -59,7 +59,8 @@ const Login: React.FC<ModalProps> = ({ closeModal, toggleModal, resetModal }) =>
 								value={password}
 								onChange={(e) => setPassword(e.target.value)}
 							/>
-						</div>						
+						</div>	
+						<p>{error ? error : ""}</p>						
 					</div>					
 
 					<div className="flex flex-col items-center gap-2 w-[280px]">
@@ -75,8 +76,7 @@ const Login: React.FC<ModalProps> = ({ closeModal, toggleModal, resetModal }) =>
 							onClick={toggleModal}
 						>
 							Зарегистрироваться
-						</button>
-						<p>{error ? error : ""}</p>						
+						</button>											
 					</div>			
 					<button className="text-md opacity-[50%] hover:underline mt-[8px] mb-[-8px]" onClick={resetModal}>Забыли пароль?</button>		
 				</div>							
