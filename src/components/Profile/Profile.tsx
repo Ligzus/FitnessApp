@@ -2,11 +2,12 @@ import { useState } from "react";
 import UserCards from "../Card/UserCards/UserCards";
 import PasswordChange from "../Modal/PasswordChange/PasswordChange";
 import PasswordChangeSuccess from "../Modal/PasswordChange/PasswordChangeSuccess";
-import { auth } from "../../utils/firebase";
+import { useUser } from "../../hooks/useUser"; // Используем контекст пользователя
 
 function Profile() {
 	const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false);
 	const [isPasswordChanged, setIsPasswordChanged] = useState(false);
+	const { user, logoutUser } = useUser(); // Получаем пользователя и метод выхода
 
 	const openPasswordModal = () => {
 		setIsPasswordModalOpen(true);
@@ -25,6 +26,10 @@ function Profile() {
 		}
 	}
 
+	if (!user) {
+		return <p>Загрузка...</p>; // Пока данные пользователя загружаются
+	}
+
 	return (
 		<div>
 			<div className="mt-[40px] sm:mt-[60px]">
@@ -41,8 +46,8 @@ function Profile() {
 						<p className="text-[24px] sm:text-[32px] font-medium text-start mb-[18px] sm:mb-[30px]">Сергей</p>
 
 						<div className="flex flex-col items-start mb-[20px] sm:mb-[30px]">
-							<p>Логин: {auth.currentUser?.email}</p>
-							<p>Пароль: 4fkhdj880d</p>
+							<p>Логин: {user.email}</p> {/* Используем email из контекста */}
+							<p>Пароль: 4fkhdj880d</p> {/* Пример пароля (заглушка) */}
 						</div>
 
 						<div className="flex-col flex sm:flex-row gap-[10px]">
@@ -52,7 +57,10 @@ function Profile() {
 							>
 								Изменить пароль
 							</button>
-							<button className="w-[300px] h-[50px] sm:w-[192px] sm:h-[52px] border border-black bg-[#ffffff] rounded-[46px] hover:bg-[#E9ECED] active:bg-[#000000] active:text-[#FFFFFF] text-lg">
+							<button
+								onClick={logoutUser}
+								className="w-[300px] h-[50px] sm:w-[192px] sm:h-[52px] border border-black bg-[#ffffff] rounded-[46px] hover:bg-[#E9ECED] active:bg-[#000000] active:text-[#FFFFFF] text-lg"
+							>
 								Выйти
 							</button>
 						</div>

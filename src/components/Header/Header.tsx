@@ -30,8 +30,6 @@ const Header: React.FC<HeaderProps> = ({ openModal }) => {
 		};
 	}, []);
 
-	console.log(user);
-
 	return (
 		<div className="header flex flex-row justify-between relative">
 			<Link to={"/"} className="headerLogo">
@@ -39,9 +37,6 @@ const Header: React.FC<HeaderProps> = ({ openModal }) => {
 				<p className="hidden sm:block text-lg opacity-50">Онлайн-тренировки для занятий дома</p>
 			</Link>
 			<div className="headerButton">
-				{/* Эта часть кода будет отображаться после реализации логики логина и появления пользователя в состоянии: */}
-
-				{/* Модалка пользователя при клике на Имя: */}
 				<div
 					ref={modalRef}
 					className={
@@ -51,13 +46,13 @@ const Header: React.FC<HeaderProps> = ({ openModal }) => {
 					}
 				>
 					<div className="mb-[30px]">
-						<p className="text-[18px] font-medium text-center">{auth.currentUser?.email}</p>
-						<p className="text-[18px] font-medium text-center text-gray-400 mb-[18px]">sergey.petrov96@mail.ru</p>
+						<p className="text-[18px] font-medium text-center">{user?.email}</p>
 					</div>
 
 					<div className="flex flex-col items-center gap-4">
 						<Link
-							to={"/profile"} onClick={toggleModal}
+							to={"/profile"}
+							onClick={toggleModal}
 							className="flex text-black text-lg font-normal flex-row justify-center items-center p-4 gap-2 w-full h-[52px] bg-[#BCEC30] hover:bg-[#C6FF00] active:bg-[#000000] active:text-[#FFFFFF] rounded-[46px]"
 						>
 							Мой профиль
@@ -77,11 +72,10 @@ const Header: React.FC<HeaderProps> = ({ openModal }) => {
 						</button>
 					</div>
 				</div>
-				{user !== null  ? (
+				{user ? (
 					<div onClick={toggleModal} className="flex gap-[12px] items-center cursor-pointer">
 						<img src="/profile-photo-mini.svg" alt="profile-photo-mini" />
-
-						<p className="hidden sm:block text-[24px]">{auth.currentUser?.email}</p>
+						<p className="hidden sm:block text-[24px]">{user.email}</p>
 
 						<svg
 							className="hidden sm:block"
