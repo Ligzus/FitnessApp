@@ -25,6 +25,7 @@ const Register: React.FC<ModalProps> = ({ closeModal, toggleModal }) => {
 				setEmail("");
 				setPassword("");
 				setcopyPassword("");
+				closeModal();
 			})
 			.catch((error) => {
 				if (error.message === "Firebase: Error (auth/invalid-email).") {

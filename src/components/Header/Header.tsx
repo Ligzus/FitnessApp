@@ -2,6 +2,7 @@ import { signOut } from "firebase/auth";
 import React, { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import { auth } from "../../utils/firebase";
+import { useUser } from "../../hooks/useUser";
 
 interface HeaderProps {
 	openModal: () => void;
@@ -10,6 +11,7 @@ interface HeaderProps {
 const Header: React.FC<HeaderProps> = ({ openModal }) => {
 	const [modalVisible, setModalVisible] = useState(false);
 	const modalRef = useRef<HTMLDivElement>(null);
+	const { user, logoutUser } = useUser();
 
 	const toggleModal = () => {
 		setModalVisible((prevModalVisible) => !prevModalVisible);
@@ -35,26 +37,6 @@ const Header: React.FC<HeaderProps> = ({ openModal }) => {
 				<p className="hidden sm:block text-lg opacity-50">Онлайн-тренировки для занятий дома</p>
 			</Link>
 			<div className="headerButton">
-				{/* Эта часть кода будет отображаться после реализации логики логина и появления пользователя в состоянии: */}
-
-				<div onClick={toggleModal} className="flex gap-[12px] items-center cursor-pointer">
-					<img src="/profile-photo-mini.svg" alt="profile-photo-mini" />
-
-					<p className="hidden sm:block text-[24px]">Сергей</p>
-
-					<svg
-						className="hidden sm:block"
-						width="14"
-						height="9"
-						viewBox="0 0 14 9"
-						fill="none"
-						xmlns="http://www.w3.org/2000/svg"
-					>
-						<path d="M12.3553 1.03308L6.67773 6.7107L1.00012 1.03308" stroke="black" strokeWidth="2" />
-					</svg>
-				</div>
-
-				{/* Модалка пользователя при клике на Имя: */}
 				<div
 					ref={modalRef}
 					className={
@@ -64,13 +46,13 @@ const Header: React.FC<HeaderProps> = ({ openModal }) => {
 					}
 				>
 					<div className="mb-[30px]">
-						<p className="text-[18px] font-medium text-center">Сергей</p>
-						<p className="text-[18px] font-medium text-center text-gray-400 mb-[18px]">sergey.petrov96@mail.ru</p>
+						<p className="text-[18px] font-medium text-center">{user?.email}</p>
 					</div>
 
 					<div className="flex flex-col items-center gap-4">
 						<Link
 							to={"/profile"}
+							onClick={toggleModal}
 							className="flex text-black text-lg font-normal flex-row justify-center items-center p-4 gap-2 w-full h-[52px] bg-[#BCEC30] hover:bg-[#C6FF00] active:bg-[#000000] active:text-[#FFFFFF] rounded-[46px]"
 						>
 							Мой профиль
@@ -79,6 +61,8 @@ const Header: React.FC<HeaderProps> = ({ openModal }) => {
 						<button
 							onClick={() =>
 								signOut(auth).then(() => {
+									toggleModal();
+									logoutUser();
 									console.log("succes");
 								})
 							}
@@ -88,13 +72,30 @@ const Header: React.FC<HeaderProps> = ({ openModal }) => {
 						</button>
 					</div>
 				</div>
+				{user ? (
+					<div onClick={toggleModal} className="flex gap-[12px] items-center cursor-pointer">
+						<img src="/profile-photo-mini.svg" alt="profile-photo-mini" />
+						<p className="hidden sm:block text-[24px]">{user.email}</p>
 
-				<button
-					onClick={openModal}
-					className="bg-[#BCEC30] px-[16px] py-[8px] sm:px-[26px] rounded-[46px] hover:bg-[#C6FF00] active:bg-[#000000] active:text-[#FFFFFF] text-[18px] sm:text-lg sm:h-[52px]"
-				>
-					Войти
-				</button>
+						<svg
+							className="hidden sm:block"
+							width="14"
+							height="9"
+							viewBox="0 0 14 9"
+							fill="none"
+							xmlns="http://www.w3.org/2000/svg"
+						>
+							<path d="M12.3553 1.03308L6.67773 6.7107L1.00012 1.03308" stroke="black" strokeWidth="2" />
+						</svg>
+					</div>
+				) : (
+					<button
+						onClick={openModal}
+						className="bg-[#BCEC30] px-[16px] py-[8px] sm:px-[26px] rounded-[46px] hover:bg-[#C6FF00] active:bg-[#000000] active:text-[#FFFFFF] text-[18px] sm:text-lg sm:h-[52px]"
+					>
+						Войти
+					</button>
+				)}
 			</div>
 		</div>
 	);
