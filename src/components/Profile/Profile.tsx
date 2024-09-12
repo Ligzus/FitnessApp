@@ -2,6 +2,7 @@ import { useState } from "react";
 import UserCards from "../Card/UserCards/UserCards";
 import PasswordChange from "../Modal/PasswordChange/PasswordChange";
 import PasswordChangeSuccess from "../Modal/PasswordChange/PasswordChangeSuccess";
+import { auth } from "../../utils/firebase";
 
 function Profile() {
 	const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false);
@@ -40,7 +41,7 @@ function Profile() {
 						<p className="text-[24px] sm:text-[32px] font-medium text-start mb-[18px] sm:mb-[30px]">Сергей</p>
 
 						<div className="flex flex-col items-start mb-[20px] sm:mb-[30px]">
-							<p>Логин: sergey.petrov96</p>
+							<p>Логин: {auth.currentUser?.email}</p>
 							<p>Пароль: 4fkhdj880d</p>
 						</div>
 

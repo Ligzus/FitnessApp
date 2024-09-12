@@ -1,6 +1,7 @@
 import { signInWithEmailAndPassword } from "firebase/auth";
 import React, { useState } from "react";
 import { auth } from "../../../../utils/firebase";
+import { useUser } from "../../../../hooks/useUser";
 
 interface ModalProps {
 	closeModal: () => void;
@@ -12,13 +13,16 @@ const Login: React.FC<ModalProps> = ({ closeModal, toggleModal, resetModal }) =>
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
 	const [error, setError] = useState("");
+	const { loginUser } = useUser();
 
 	function login() {
 		signInWithEmailAndPassword(auth, email, password)
 			.then((user) => {
-				console.log(user);
+				//console.log(user);
 				setEmail("");
 				setPassword("");
+				closeModal();
+				loginUser(auth.currentUser);
 			})
 			.catch((error) => {
 				if (error.message === "Firebase: Error (auth/invalid-email).") {
