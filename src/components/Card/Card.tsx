@@ -6,15 +6,19 @@ import { addCourseToUser } from "../../utils/api";
 function Card({ courseId, image, nameRu }: CardType) {
 	const { user } = useUser();
 
-	function addCourse() {
+	function addCourse(event: React.MouseEvent<HTMLButtonElement>) {
+		event.stopPropagation();
+		event.preventDefault();
+	
 		addCourseToUser(user.uid, courseId)
 			.then(() => {
 				console.log("Курс добавлен в избранное");
 			})
 			.catch((error) => {
 				console.error("Ошибка при добавлении курса:", error);
-			});
+		});
 	}
+	
 
 	return (
 		<Link
@@ -25,7 +29,7 @@ function Card({ courseId, image, nameRu }: CardType) {
 			<div className="cardImage relative">
 				<img className="" src={image} alt={nameRu} />
 				<button
-					onClick={addCourse}
+					onClick={(event) => addCourse(event)}
 					className="addCourse w-[32px] h-[32px] absolute top-5 right-5"
 					title="Добавить курс"
 				>
