@@ -1,7 +1,21 @@
 import { Link } from "react-router-dom";
 import { CardType } from "../../types/cards";
+import { useUser } from "../../hooks/useUser";
+import { addCourseToUser } from "../../utils/api";
 
 function Card({ courseId, image, nameRu }: CardType) {
+	const { user } = useUser();
+
+	function addCourse() {
+		addCourseToUser(user.uid, courseId)
+			.then(() => {
+				console.log("Курс добавлен в избранное");
+			})
+			.catch((error) => {
+				console.error("Ошибка при добавлении курса:", error);
+			});
+	}
+
 	return (
 		<Link
 			to={`/course/${courseId}`} // Передаем ID курса в URL
@@ -10,7 +24,11 @@ function Card({ courseId, image, nameRu }: CardType) {
 		>
 			<div className="cardImage relative">
 				<img className="" src={image} alt={nameRu} />
-				<button className="addCourse w-[32px] h-[32px] absolute top-5 right-5" title="Добавить курс">
+				<button
+					onClick={addCourse}
+					className="addCourse w-[32px] h-[32px] absolute top-5 right-5"
+					title="Добавить курс"
+				>
 					<svg className="w-[32px] h-[32px]">
 						<use xlinkHref="./icon/sprite.svg#icon-plus" />
 					</svg>

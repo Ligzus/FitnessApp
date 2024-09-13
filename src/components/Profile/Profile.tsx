@@ -1,13 +1,17 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import UserCards from "../Card/UserCards/UserCards";
 import PasswordChange from "../Modal/PasswordChange/PasswordChange";
 import PasswordChangeSuccess from "../Modal/PasswordChange/PasswordChangeSuccess";
 import { useUser } from "../../hooks/useUser"; // Используем контекст пользователя
+import { getCourseById, getUserCourses } from "../../utils/api";
 
 function Profile() {
 	const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false);
 	const [isPasswordChanged, setIsPasswordChanged] = useState(false);
 	const { user, logoutUser } = useUser(); // Получаем пользователя и метод выхода
+	const [isLoaded, setIsLoaded] = useState(false);
+	const [userCourses, setUserCourses] = useState<any[]>([]);
+	const [courseInfoArray, setCourseInfoArray] = useState<any[]>([]);
 
 	const openPasswordModal = () => {
 		setIsPasswordModalOpen(true);
@@ -25,6 +29,40 @@ function Profile() {
 			element.scrollIntoView({ behavior: "smooth" });
 		}
 	}
+
+	useEffect(() => {
+		async function fetchUserCourses() {
+			let responseArray = [];
+			const response = await getUserCourses(user.uid);
+			for (let i = 0; i < Object.keys(response).length; i++) {
+				responseArray.push(response[Object.keys(response)[i]]);
+			}
+			setUserCourses(responseArray);
+		}
+
+		fetchUserCourses();
+	}, []);
+
+	useEffect(() => {
+		async function fetchCourseInfo() {
+			if (userCourses.length > 0) {
+				try {
+					const courseInfoArray = await Promise.all(
+						userCourses.map(async (course) => {
+							const response = await getCourseById(course.id);
+							return response;
+						})
+					);
+					setCourseInfoArray(courseInfoArray);
+					setIsLoaded(true);
+				} catch (error) {
+					console.error("Ошибка при получении информации о курсе:", error);
+				}
+			}
+		}
+	
+		fetchCourseInfo();
+	}, [userCourses]);
 
 	if (!user) {
 		return <p>Загрузка...</p>; // Пока данные пользователя загружаются
@@ -75,10 +113,21 @@ function Profile() {
 				>
 					Мои курсы
 				</h2>
-				<div className="flex flex-row flex-wrap gap-10 justify-center">
-					<UserCards />
-					<UserCards />
-					<UserCards />
+				<div className="flex flex-row flex-wrap gap-10 justify-start">
+					{isLoaded ? (
+						courseInfoArray.map((courseItem: any) => (
+							<UserCards
+								key={courseItem._id}
+								courseId={courseItem._id}
+								image={courseItem.images.cardImage}
+								nameRu={courseItem.nameRU}
+							/>
+						))
+					) : (
+						<div>
+							<p>Страница загружается</p>
+						</div>
+					)}
 				</div>
 
 				<div className="lg:hidden flex flex-row justify-end mt-[24px]">

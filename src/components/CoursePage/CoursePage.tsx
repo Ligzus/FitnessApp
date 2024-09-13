@@ -1,12 +1,14 @@
 import { useParams } from "react-router-dom";
-import { getCourse } from "../../utils/api";
+import { addCourseToUser, getCourse } from "../../utils/api";
 import { useEffect, useState } from "react";
+import { useUser } from "../../hooks/useUser";
 
 function CoursePage() {
 	const { id } = useParams(); // Получаем ID из URL
 	const [course, setCourse] = useState<any>(null);
 	const [isLoading, setIsLoading] = useState(true);
 	const [bgColor, setBgColor] = useState("");
+	const { user } = useUser();
 
 	async function getCourseById(id: string) {
 		const courses = await getCourse();
@@ -23,6 +25,16 @@ function CoursePage() {
 				.finally(() => setIsLoading(false));
 		}
 	}, [id]);
+
+	function addCourse() {
+		addCourseToUser(user.uid, course._id)
+			.then(() => {
+				console.log("Курс добавлен в избранное");
+			})
+			.catch((error) => {
+				console.error("Ошибка при добавлении курса:", error);
+			});
+	}
 
 	useEffect(() => {
 		let bg_color = "";
@@ -151,10 +163,15 @@ function CoursePage() {
 												<p> помогают противостоять стрессам</p>
 											</div>
 										</div>
-
-										<button className="w-full h-[50px] bg-[#BCEC30] rounded-[40px] hover:bg-[#C6FF00] active:bg-[#000000] active:text-[#FFFFFF] md:text-lg mt-[20px] sm:mt-[28px]">
-											Войдите, чтобы добавить курс
-										</button>
+										{user ? (
+											<button onClick={addCourse} className="w-full h-[50px] bg-[#BCEC30] rounded-[40px] hover:bg-[#C6FF00] active:bg-[#000000] active:text-[#FFFFFF] md:text-lg mt-[20px] sm:mt-[28px]">
+												Добавить курс
+											</button>
+										) : (
+											<button className="w-full h-[50px] bg-[#BCEC30] rounded-[40px] hover:bg-[#C6FF00] active:bg-[#000000] active:text-[#FFFFFF] md:text-lg mt-[20px] sm:mt-[28px]">
+												Войдите, чтобы добавить курс
+											</button>
+										)}
 									</div>
 								</div>
 
