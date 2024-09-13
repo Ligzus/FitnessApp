@@ -1,6 +1,7 @@
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import React, { useState } from "react";
 import { auth } from "../../../../utils/firebase";
+import { addUser } from "../../../../utils/api";
 
 interface ModalProps {
 	closeModal: () => void;
@@ -20,11 +21,12 @@ const Register: React.FC<ModalProps> = ({ closeModal, toggleModal }) => {
 		}
 
 		createUserWithEmailAndPassword(auth, email, password)
-			.then((user) => {
-				console.log(user);
+			.then((userCredential) => {
+				console.log(userCredential);
 				setEmail("");
 				setPassword("");
 				setcopyPassword("");
+				addUser(userCredential.user.uid);
 				closeModal();
 			})
 			.catch((error) => {

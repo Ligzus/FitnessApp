@@ -16,3 +16,87 @@ export async function getCourse() {
 		throw error;
 	}
 }
+
+export async function addUser(uuid: string) {
+	try {
+		const response = await fetch(baseHost + `users/${uuid}.json`, {
+			method: "PUT",
+			headers: {
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify({
+				uuid: `${uuid}`,
+			}),
+		});
+		if (!response.ok) {
+			if (response.status === 401) {
+				throw new Error("Невозможно добавить пользователя");
+			} else {
+				throw new Error(`Ошибка! Статус: ${response.status}`);
+			}
+		}
+	} catch (error) {
+		console.warn(error);
+		throw error;
+	}
+}
+
+export async function addCourseToUser(uuid: string, courseId: string) {
+	try {
+		const response = await fetch(baseHost + `users/${uuid}/courses/${courseId}.json`, {
+			method: "PATCH",
+			headers: {
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify({
+				id: `${courseId}`,
+			}),
+		});
+		if (!response.ok) {
+			if (response.status === 401) {
+				throw new Error("Невозможно добавить курс пользователю");
+			} else {
+				throw new Error(`Ошибка! Статус: ${response.status}`);
+			}
+		}
+	} catch (error) {
+		console.warn(error);
+		throw error;
+	}
+}
+
+export async function getUserCourses(uuid: string) {
+	try {
+		const response = await fetch(baseHost + `users/${uuid}/courses.json`);
+		if (!response.ok) {
+			if (response.status === 401) {
+				throw new Error("Невозможно получить список курсов пользователя");
+			} else {
+				throw new Error(`Ошибка! Статус: ${response.status}`);
+			}
+		}
+		const data = await response.json();
+		return data;
+	} catch (error) {
+		console.warn(error);
+		throw error;
+	}
+}
+
+export async function getCourseById(courseId: string) {
+	try {
+		const response = await fetch(baseHost + `courses/${courseId}.json`);
+		if (!response.ok) {
+			if (response.status === 401) {
+				throw new Error("Невозможно получить курс");
+			} else {
+				throw new Error(`Ошибка! Статус: ${response.status}`);
+			}
+		}
+		const data = await response.json();
+		return data;
+	} catch (error) {
+		console.warn(error);
+		throw error;
+	}
+}
