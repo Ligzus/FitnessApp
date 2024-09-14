@@ -21,7 +21,7 @@ function App() {
 					<Route path="/" element={<Main />} />
 					<Route path="/profile" element={<Profile />} />
 					<Route path="/course/:id" element={<CoursePage />} />
-					<Route path="/training" element={<TrainingPage />} />
+					<Route path="/training/:courseId/:id" element={<TrainingPage />} />
 				</Routes>
 				{isModalOpen && <AuthModal closeModal={closeModal} />}
 			</div>

@@ -1,13 +1,44 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "./TrainingSelectModal.css";
-import { Link } from "react-router-dom";
+import TrainingLink from "./TrainingLink/TrainingLink";
+import { getCourseById, getWorkoutsById } from "../../../utils/api";
 
 interface ModalProps {
 	closeModal: () => void;
-	onSubmit: () => void;
+	courseId: string;
 }
 
-const TrainingSelectModal: React.FC<ModalProps> = ({ closeModal, onSubmit }) => {
+const TrainingSelectModal: React.FC<ModalProps> = ({ closeModal, courseId }) => {
+	const [courseData, setCourseData] = useState<[]>([]);
+	const [workoutInfo, setWorkoutInfo] = useState<any[]>([]);
+
+	useEffect(() => {
+		getCourseById(courseId)
+		.then((data) => {
+			setCourseData(data.workouts);
+		})
+		.catch((error) => console.error(error));
+	}, [courseId]);
+
+	useEffect(() => {
+		async function fetchWorkoutInfo() {
+			if (courseData.length > 0) {
+				try {
+					const workoutInfoArray = await Promise.all(
+						courseData.map(async (workout) => {
+							const response = await getWorkoutsById(workout);
+							return response;
+						})
+					);
+					setWorkoutInfo(workoutInfoArray);
+				} catch (error) {
+					console.error("Ошибка при получении информации о курсе:", error);
+				}
+			}
+		}
+		fetchWorkoutInfo();
+	}, [courseData])
+
 	return (
 		<div className="fixed inset-0 flex justify-center items-center bg-gray-900 bg-opacity-50" onClick={closeModal}>
 			<div
@@ -17,95 +48,11 @@ const TrainingSelectModal: React.FC<ModalProps> = ({ closeModal, onSubmit }) => 
 				<div className="flex flex-col items-start gap-3 w-full h-full">
 					<h2 className="text-black text-[34px] text-start leading-10 font-medium mb-[20px]">Выберите тренировку</h2>
 
-					<div className="flex flex-col gap-3 w-full h-[374px] overflow-y-auto leading-5 pr-[24px]">
-						<div className="flex gap-1 w-full text-start items-center border-b-2">
-							<svg className="w-[32px] h-[32px]">
-								<use xlinkHref="./icon/sprite.svg#icon-check" />
-							</svg>
-							<Link className="text-[18px]" to={"/training"}>
-								Утренняя практика
-								<p className="text-[14px] py-[10px]">Йога на каждый день / 1 день</p>
-							</Link>
-						</div>
-
-						<div className="flex gap-1 w-full text-start items-center border-b-2">
-							<svg className="w-[32px] h-[32px]">
-								<use xlinkHref="./icon/sprite.svg#icon-check" />
-							</svg>
-							<Link className="text-[18px]" to={"/training"}>
-								Красота и здоровье
-								<p className="text-[14px] py-[10px]">Йога на каждый день / 2 день</p>
-							</Link>
-						</div>
-
-						<div className="flex gap-1 w-full text-start items-center border-b-2">
-							<svg className="w-[32px] h-[32px]">
-								<use xlinkHref="./icon/sprite.svg#icon-uncheck" />
-							</svg>
-							<Link className="text-[18px]" to={"/training"}>
-								Асаны стоя
-								<p className="text-[14px] py-[10px]">Йога на каждый день / 3 день</p>
-							</Link>
-						</div>
-
-						<div className="flex gap-1 w-full text-start items-center border-b-2">
-							<svg className="w-[32px] h-[32px]">
-								<use xlinkHref="./icon/sprite.svg#icon-uncheck" />
-							</svg>
-							<Link className="text-[18px]" to={"/training"}>
-								Растягиваем мышцы бедра
-								<p className="text-[14px] py-[10px]">Йога на каждый день / 4 день</p>
-							</Link>
-						</div>
-
-						<div className="flex gap-1 w-full text-start items-center border-b-2">
-							<svg className="w-[32px] h-[32px]">
-								<use xlinkHref="./icon/sprite.svg#icon-uncheck" />
-							</svg>
-							<Link className="text-[18px]" to={"/training"}>
-								Гибкость спины
-								<p className="text-[14px] py-[10px]">Йога на каждый день / 5 день</p>
-							</Link>
-						</div>
-
-						<div className="flex gap-1 w-full text-start items-center border-b-2">
-							<svg className="w-[32px] h-[32px]">
-								<use xlinkHref="./icon/sprite.svg#icon-uncheck" />
-							</svg>
-							<Link className="text-[18px]" to={"/training"}>
-								Асаны стоя
-								<p className="text-[14px] py-[10px]">Йога на каждый день / 3 день</p>
-							</Link>
-						</div>
-
-						<div className="flex gap-1 w-full text-start items-center border-b-2">
-							<svg className="w-[32px] h-[32px]">
-								<use xlinkHref="./icon/sprite.svg#icon-uncheck" />
-							</svg>
-							<Link className="text-[18px]" to={"/training"}>
-								Растягиваем мышцы бедра
-								<p className="text-[14px] py-[10px]">Йога на каждый день / 4 день</p>
-							</Link>
-						</div>
-
-						<div className="flex gap-1 w-full text-start items-center border-b-2">
-							<svg className="w-[32px] h-[32px]">
-								<use xlinkHref="./icon/sprite.svg#icon-uncheck" />
-							</svg>
-							<Link className="text-[18px]" to={"/training"}>
-								Гибкость спины
-								<p className="text-[14px] py-[10px]">Йога на каждый день / 5 день</p>
-							</Link>
-						</div>
+					<div className="flex flex-col gap-3 w-full h-[374px] overflow-y-auto leading-5 pr-[20px]">
+						{workoutInfo.map((workout, index) => (
+                            <TrainingLink key={index} trainingId={workout._id} name={workout.name} courseId={courseId} />
+                        ))}
 					</div>
-				</div>
-				<div className="flex items-center w-full">
-					<button
-						className="flex text-black font-medium text-lg font-medium flex-row justify-center items-center w-full h-[52px] bg-[#BCEC30] hover:bg-[#C6FF00] active:bg-[#000000] active:text-[#FFFFFF] rounded-[46px]"
-						onClick={onSubmit}
-					>
-						Начать
-					</button>
 				</div>
 			</div>
 		</div>

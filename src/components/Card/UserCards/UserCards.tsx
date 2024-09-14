@@ -55,7 +55,7 @@ function UserCards({ courseId, image, nameRu }: CardType) {
 							Продолжить
 						</button>
 						{isTrainingSelectModalOpen && (
-							<TrainingSelectModal closeModal={closeTrainingSelectModal} onSubmit={closeTrainingSelectModal} />
+							<TrainingSelectModal courseId={courseId} closeModal={closeTrainingSelectModal} />
 						)}
 					</div>
 				</div>

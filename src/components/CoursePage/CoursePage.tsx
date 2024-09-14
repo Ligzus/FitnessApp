@@ -164,7 +164,10 @@ function CoursePage() {
 											</div>
 										</div>
 										{user ? (
-											<button onClick={addCourse} className="w-full h-[50px] bg-[#BCEC30] rounded-[40px] hover:bg-[#C6FF00] active:bg-[#000000] active:text-[#FFFFFF] md:text-lg mt-[20px] sm:mt-[28px]">
+											<button
+												onClick={addCourse}
+												className="w-full h-[50px] bg-[#BCEC30] rounded-[40px] hover:bg-[#C6FF00] active:bg-[#000000] active:text-[#FFFFFF] md:text-lg mt-[20px] sm:mt-[28px]"
+											>
 												Добавить курс
 											</button>
 										) : (

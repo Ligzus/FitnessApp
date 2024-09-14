@@ -100,3 +100,21 @@ export async function getCourseById(courseId: string) {
 		throw error;
 	}
 }
+
+export async function getWorkoutsById(id: string) {
+	try {
+		const response = await fetch(baseHost + `workouts/${id}.json`);
+		if (!response.ok) {
+			if (response.status === 401) {
+				throw new Error("Невозможно получить тренировку");
+			} else {
+				throw new Error(`Ошибка! Статус: ${response.status}`);
+			}
+		}
+		const data = await response.json();
+		return data;
+	} catch (error) {
+		console.warn(error);
+		throw error;
+	}
+}
