@@ -43,6 +43,10 @@ function Profile() {
 		fetchUserCourses();
 	}, []);
 
+	const handleDeleteCourse = (courseId: string) => {
+		setCourseInfoArray(courseInfoArray.filter(course => course._id !== courseId));
+	};
+
 	useEffect(() => {
 		async function fetchCourseInfo() {
 			if (userCourses.length > 0) {
@@ -121,6 +125,7 @@ function Profile() {
 								courseId={courseItem._id}
 								image={courseItem.images.cardImage}
 								nameRu={courseItem.nameRU}
+								onDelete={handleDeleteCourse} 
 							/>
 						))
 					) : (

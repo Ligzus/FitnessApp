@@ -1,18 +1,32 @@
 import { useState } from "react";
 import TrainingSelectModal from "../../Modal/TrainingSelectModal/TrainingSelectModal";
 import { CardType } from "../../../types/cards";
+import { deleteCourseToUser } from "../../../utils/api";
+import { useUser } from "../../../hooks/useUser";
 
-function UserCards({ courseId, image, nameRu }: CardType) {
+type UserCardsProps = CardType & { onDelete: (courseId: string) => void };
+
+function UserCards({ courseId, image, nameRu, onDelete }: UserCardsProps) {
 	const [isTrainingSelectModalOpen, setTrainingSelectModalOpen] = useState(false);
-
 	const openTrainingSelectModal = () => setTrainingSelectModalOpen(true);
 	const closeTrainingSelectModal = () => setTrainingSelectModalOpen(false);
+	const { user } = useUser();
+
+	function deleteCourse() {
+		deleteCourseToUser(user.uid, courseId)
+			.then(() => {
+				onDelete(courseId);
+			})
+			.catch((error) => {
+				console.error('Ошибка при удалении курса:', error);
+			});
+	}
 
 	return (
 		<div key={courseId} className="card w-[343px] sm:w-[360px] bg-white rounded-[30px] flex flex-col gap-6 shadow-[0_4px_67px_-12px_rgba(0,0,0,0.13)]">
 			<img className="" src={image} alt={nameRu} />
 			<div className="cardImage relative">
-				<button className="addCourse w-[32px] h-[32px] absolute top-[-330px] right-5" title="Удалить курс">
+				<button onClick={deleteCourse} className="addCourse w-[32px] h-[32px] absolute top-[-330px] right-5" title="Удалить курс">
 					<svg className="w-[32px] h-[32px]">
 						<use xlinkHref="./icon/sprite.svg#icon-minus" />
 					</svg>

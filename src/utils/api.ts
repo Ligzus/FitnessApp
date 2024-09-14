@@ -65,6 +65,20 @@ export async function addCourseToUser(uuid: string, courseId: string) {
 	}
 }
 
+export async function deleteCourseToUser(uuid: string, courseId: string) {
+	fetch(baseHost + `/users//${uuid}/courses/${courseId}.json`, {
+		method: 'DELETE',
+	}).then(response => {
+		if (response.ok) {
+		console.log('Курс успешно удален');
+		} else {
+		console.error('Ошибка при удалении курса');
+		}
+	}).catch(error => {
+		console.error('Ошибка:', error);
+	});
+}
+
 export async function getUserCourses(uuid: string) {
 	try {
 		const response = await fetch(baseHost + `users/${uuid}/courses.json`);
