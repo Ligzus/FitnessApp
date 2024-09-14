@@ -40,7 +40,7 @@ const TrainingSelectModal: React.FC<ModalProps> = ({ closeModal, courseId }) => 
 	}, [courseData])
 
 	return (
-		<div className="fixed inset-0 flex justify-center items-center bg-gray-900 bg-opacity-50" onClick={closeModal}>
+		<div className="fixed z-40 inset-0 flex justify-center items-center bg-gray-900 bg-opacity-50" onClick={closeModal}>
 			<div
 				className="relative flex flex-col items-center p-8 gap-8 w-[350px] bg-white shadow-[0_4px_67px_-12px_rgba(0,0,0,0.13)] rounded-[30px] overflow-hidden"
 				onClick={(e) => e.stopPropagation()}
