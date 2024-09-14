@@ -21,7 +21,7 @@ const TrainingProgressModal: React.FC<ModalProps> = ({ closeModal, onSubmit, exe
 					<div className="flex flex-col gap-5 w-full h-[350px] overflow-y-auto leading-5 pr-[24px]">					
 						
 						{exercises.map((exercise, index) => (
-							<TrainingProgressItem key={index} name={exercise.name} />
+							<TrainingProgressItem key={index} exercise={exercise} />
 						))}
 					</div>
 				</div>
