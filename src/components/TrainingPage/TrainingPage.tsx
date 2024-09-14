@@ -1,5 +1,5 @@
 import ExerciseProgress from "./ExerciseProgress/ExerciseProgress";
-import TrainingProgressModal from "../Modal/TrainingProgressModal/TrainingProgressModal";
+import TrainingProgressModal from "../Modal/TrainingProgressModal/TrainingProgress/TrainingProgressModal";
 import SaveTrainingProgressModal from "../Modal/TrainingProgressModal/SaveTrainingProgressModal";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
@@ -83,6 +83,7 @@ function TrainingPage() {
 									<TrainingProgressModal
 										closeModal={closeTrainingProgressModal}
 										onSubmit={handleSaveTrainingProgress}
+										exercises={exercises}
 									/>
 								)}
 								{isTrainingProgressModalOpen && isSaveTrainingProgressModalOpen && (
