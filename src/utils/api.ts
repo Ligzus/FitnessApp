@@ -118,3 +118,21 @@ export async function getWorkoutsById(id: string) {
 		throw error;
 	}
 }
+
+export async function addRealQuantity(uuid: string, courseId: string, workout_Id: string, exercises: { name: string, quantity: number }[]) {
+    try {
+        const response = await fetch(baseHost + `users/${uuid}/courses/${courseId}/workouts/${workout_Id}.json`, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ exercises }),  // Отправляем массив объектов
+        });
+        if (!response.ok) {
+            throw new Error(`Ошибка! Статус: ${response.status}`);
+        }
+    } catch (error) {
+        console.warn(error);
+        throw error;
+    }
+}

@@ -3,7 +3,8 @@ import TrainingProgressModal from "../Modal/TrainingProgressModal/TrainingProgre
 import SaveTrainingProgressModal from "../Modal/TrainingProgressModal/SaveTrainingProgressModal";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { getCourseById, getWorkoutsById } from "../../utils/api";
+import { addRealQuantity, getCourseById, getWorkoutsById } from "../../utils/api";
+import { useUser } from "../../hooks/useUser";
 
 function TrainingPage() {
 	const [isTrainingProgressModalOpen, setIsTrainingProgressModalOpen] = useState(false);
@@ -13,6 +14,7 @@ function TrainingPage() {
 	const [exercises, setExercises] = useState<any[]>([]);
 	const [isLoading, setIsLoading] = useState(true);
 	const [courseData, setCourseData] = useState<string>();
+	const {user} = useUser();
 
 	const openTrainingProgressModal = () => {
 		setIsTrainingProgressModalOpen(true);
@@ -20,7 +22,25 @@ function TrainingPage() {
 	};
 	const closeTrainingProgressModal = () => setIsTrainingProgressModalOpen(false);
 
-	const handleSaveTrainingProgress = () => setIsSaveTrainingProgressModalOpen(true);
+	const handleSaveTrainingProgress = (updatedQuantities: { [exerciseName: string]: number }) => {
+		if (user.uid && courseId) {
+			// Преобразуем данные в нужную структуру
+			const exercisesData = Object.entries(updatedQuantities).map(([name, quantity]) => ({
+				name,
+				quantity
+			}));
+	
+			// Передаем данные в API
+			addRealQuantity(user.uid, courseId, workout._id, exercisesData)
+				.catch((error) => console.error("Ошибка сохранения прогресса:", error));
+		} else {
+			console.error('ID тренировки или курса не найдены');
+		}
+	
+		setIsSaveTrainingProgressModalOpen(true);
+	};
+		
+	
 
 	useEffect(() => {
 		if (courseId) {
@@ -84,6 +104,7 @@ function TrainingPage() {
 										closeModal={closeTrainingProgressModal}
 										onSubmit={handleSaveTrainingProgress}
 										exercises={exercises}
+										workout_Id={workout._id}
 									/>
 								)}
 								{isTrainingProgressModalOpen && isSaveTrainingProgressModalOpen && (
