@@ -127,6 +127,7 @@ function TrainingPage() {
 										onSubmit={handleSaveTrainingProgress}
 										exercises={exercises}
 										workout_Id={workout._id}
+										exerciseProgress={exerciseProgress}
 									/>
 								)}
 								{isTrainingProgressModalOpen && isSaveTrainingProgressModalOpen && (

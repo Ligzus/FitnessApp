@@ -7,17 +7,18 @@ interface ModalProps {
 	onSubmit: (updatedQuantities: { [key: string]: number }) => void;
 	exercises: any[];
 	workout_Id: string;
+	exerciseProgress: any;
 }
 
-const TrainingProgressModal: React.FC<ModalProps> = ({ closeModal, onSubmit, exercises }) => {
+const TrainingProgressModal: React.FC<ModalProps> = ({ closeModal, onSubmit, exercises, exerciseProgress }) => {
 	// Инициализируем состояния со значениями по умолчанию
 	const [updatedQuantities, setUpdatedQuantities] = useState<{ [exerciseName: string]: number }>({});
 
 	useEffect(() => {
 		// Устанавливаем начальные значения для всех упражнений при загрузке модального окна
 		const initialQuantities: { [key: string]: number } = {};
-		exercises.forEach((exercise) => {
-			initialQuantities[exercise.name] = 0; // Используем начальные значения (например, 0)
+		exercises.forEach((exercise, index) => {
+			initialQuantities[exercise.name] = exerciseProgress[index] || 0;
 		});
 		setUpdatedQuantities(initialQuantities);
 	}, [exercises]);
