@@ -14,21 +14,12 @@ function TrainingLink({ name, trainingId, courseId, onVisited }: TrainingLinkPro
   const linkPath = `/training/${courseId}/${trainingId}`;
 
   useEffect(() => {
-	const visitedLinks = JSON.parse(localStorage.getItem("visitedLinks") || "[]");
-	if (visitedLinks.includes(linkPath)) {
-	  setVisited(true);
-	  onVisited(trainingId, true); // Сообщаем родительскому компоненту, что элемент посещен
-	}
-  
-	// Очистка состояния при удалении курса
-	return () => {
-	  const remainingLinks = JSON.parse(localStorage.getItem("visitedLinks") || "[]").filter(
-		(link: string) => link !== linkPath
-	  );
-	  localStorage.setItem("visitedLinks", JSON.stringify(remainingLinks));
-	};
+    const visitedLinks = JSON.parse(localStorage.getItem("visitedLinks") || "[]");
+    if (visitedLinks.includes(linkPath)) {
+      setVisited(true);
+      onVisited(trainingId, true); // Сообщаем родительскому компоненту, что элемент посещен
+    }
   }, [linkPath]);
-  
 
   const handleLinkClick = () => {
     const visitedLinks = JSON.parse(localStorage.getItem("visitedLinks") || "[]");
