@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./TrainingProgressModal.css";
 import TrainingProgressItem from "../TrainingProgressItem/TrainingProgressItem";
 
@@ -10,7 +10,17 @@ interface ModalProps {
 }
 
 const TrainingProgressModal: React.FC<ModalProps> = ({ closeModal, onSubmit, exercises }) => {
+	// Инициализируем состояния со значениями по умолчанию
 	const [updatedQuantities, setUpdatedQuantities] = useState<{ [exerciseName: string]: number }>({});
+
+	useEffect(() => {
+		// Устанавливаем начальные значения для всех упражнений при загрузке модального окна
+		const initialQuantities: { [key: string]: number } = {};
+		exercises.forEach((exercise) => {
+			initialQuantities[exercise.name] = 0; // Используем начальные значения (например, 0)
+		});
+		setUpdatedQuantities(initialQuantities);
+	}, [exercises]);
 
 	const handleQuantityChange = (exerciseName: string, realQuantity: number) => {
 		setUpdatedQuantities((prev) => ({
@@ -34,7 +44,11 @@ const TrainingProgressModal: React.FC<ModalProps> = ({ closeModal, onSubmit, exe
 
 					<div className="flex flex-col gap-5 w-full h-[350px] overflow-y-auto leading-5 pr-[24px]">
 						{exercises.map((exercise, index) => (
-							<TrainingProgressItem key={index} exercise={exercise} onQuantityChange={handleQuantityChange} />
+							<TrainingProgressItem
+								key={index}
+								exercise={exercise}
+								onQuantityChange={handleQuantityChange}
+							/>
 						))}
 					</div>
 				</div>
