@@ -49,7 +49,7 @@ export async function addCourseToUser(uuid: string, courseId: string) {
 				"Content-Type": "application/json",
 			},
 			body: JSON.stringify({
-				id: `${courseId}`
+				id: `${courseId}`,
 			}),
 		});
 		if (!response.ok) {
@@ -99,9 +99,27 @@ export async function getUserCourses(uuid: string) {
 	}
 }
 
+export async function getUserCourse(uuid: string, courseId: string) {
+	try {
+		const response = await fetch(baseHost + `users/${uuid}/courses/${courseId}/workouts.json`);
+		if (!response.ok) {
+			if (response.status === 401) {
+				throw new Error("Невозможно получить список курсов пользователя");
+			} else {
+				throw new Error(`Ошибка! Статус: ${response.status}`);
+			}
+		}
+		const data = await response.json();
+		return data;
+	} catch (error) {
+		console.warn(error);
+		throw error;
+	}
+}
+
 export async function getCourseById(courseId: string) {
 	try {
-		const response = await fetch(baseHost + `courses/${courseId}.json`);
+		const response = await fetch(baseHost + `courses/${courseId}/.json`);
 		if (!response.ok) {
 			if (response.status === 401) {
 				throw new Error("Невозможно получить курс");
@@ -180,19 +198,13 @@ export async function getRealQuantity(uuid: string, courseId: string, workout_Id
 		} else {
 			return [];
 		}
-		
 	} catch (error) {
 		console.warn(error);
 		throw error;
 	}
 }
 
-export async function addWorkoutProgress(
-	uuid: string,
-	courseId: string,
-	workout_Id: string,
-	workouts: number
-) {
+export async function addWorkoutProgress(uuid: string, courseId: string, workout_Id: string, workouts: number) {
 	try {
 		const response = await fetch(baseHost + `users/${uuid}/courses/${courseId}/workouts/${workout_Id}/exercises.json`, {
 			method: "PATCH",
@@ -210,11 +222,7 @@ export async function addWorkoutProgress(
 	}
 }
 
-export async function getWorkoutProgress(
-	uuid: string,
-	courseId: string,
-	workout_Id: string,
-) {
+export async function getWorkoutProgress(uuid: string, courseId: string, workout_Id: string) {
 	try {
 		const response = await fetch(baseHost + `users/${uuid}/courses/${courseId}/workouts/${workout_Id}/exercises.json`, {
 			method: "GET",

@@ -75,9 +75,7 @@ function TrainingPage() {
 						setExerciseProgress(data);
 					}
 				})
-				.catch((error) => 
-					console.error(error)		
-			);
+				.catch((error) => console.error(error));
 		}
 	}, [user, courseId, workout]);
 
