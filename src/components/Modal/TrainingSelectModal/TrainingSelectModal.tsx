@@ -14,10 +14,10 @@ const TrainingSelectModal: React.FC<ModalProps> = ({ closeModal, courseId }) => 
 
 	useEffect(() => {
 		getCourseById(courseId)
-		.then((data) => {
-			setCourseData(data.workouts);
-		})
-		.catch((error) => console.error(error));
+			.then((data) => {
+				setCourseData(data.workouts);
+			})
+			.catch((error) => console.error(error));
 	}, [courseId]);
 
 	useEffect(() => {
@@ -28,7 +28,7 @@ const TrainingSelectModal: React.FC<ModalProps> = ({ closeModal, courseId }) => 
 						courseData.map(async (workout) => {
 							const response = await getWorkoutsById(workout);
 							return response;
-						})
+						}),
 					);
 					setWorkoutInfo(workoutInfoArray);
 				} catch (error) {
@@ -37,7 +37,7 @@ const TrainingSelectModal: React.FC<ModalProps> = ({ closeModal, courseId }) => 
 			}
 		}
 		fetchWorkoutInfo();
-	}, [courseData])
+	}, [courseData]);
 
 	return (
 		<div className="fixed z-40 inset-0 flex justify-center items-center bg-gray-900 bg-opacity-50" onClick={closeModal}>
@@ -50,8 +50,8 @@ const TrainingSelectModal: React.FC<ModalProps> = ({ closeModal, courseId }) => 
 
 					<div className="flex flex-col gap-3 w-full h-[374px] overflow-y-auto leading-5 pr-[20px]">
 						{workoutInfo.map((workout, index) => (
-                            <TrainingLink key={index} trainingId={workout._id} name={workout.name} courseId={courseId} />
-                        ))}
+							<TrainingLink key={index} trainingId={workout._id} name={workout.name} courseId={courseId} />
+						))}
 					</div>
 				</div>
 			</div>

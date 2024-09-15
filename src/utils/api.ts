@@ -67,16 +67,18 @@ export async function addCourseToUser(uuid: string, courseId: string) {
 
 export async function deleteCourseToUser(uuid: string, courseId: string) {
 	fetch(baseHost + `/users//${uuid}/courses/${courseId}.json`, {
-		method: 'DELETE',
-	}).then(response => {
-		if (response.ok) {
-		console.log('Курс успешно удален');
-		} else {
-		console.error('Ошибка при удалении курса');
-		}
-	}).catch(error => {
-		console.error('Ошибка:', error);
-	});
+		method: "DELETE",
+	})
+		.then((response) => {
+			if (response.ok) {
+				console.log("Курс успешно удален");
+			} else {
+				console.error("Ошибка при удалении курса");
+			}
+		})
+		.catch((error) => {
+			console.error("Ошибка:", error);
+		});
 }
 
 export async function getUserCourses(uuid: string) {
@@ -133,44 +135,49 @@ export async function getWorkoutsById(id: string) {
 	}
 }
 
-export async function addRealQuantity(uuid: string, courseId: string, workout_Id: string, exercises: { name: string, quantity: number }[]) {
-    try {
-        const response = await fetch(baseHost + `users/${uuid}/courses/${courseId}/workouts/${workout_Id}.json`, {
-            method: "PUT",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ exercises }),  // Отправляем массив объектов
-        });
-        if (!response.ok) {
-            throw new Error(`Ошибка! Статус: ${response.status}`);
-        }
-    } catch (error) {
-        console.warn(error);
-        throw error;
-    }
+export async function addRealQuantity(
+	uuid: string,
+	courseId: string,
+	workout_Id: string,
+	exercises: { name: string; quantity: number }[],
+) {
+	try {
+		const response = await fetch(baseHost + `users/${uuid}/courses/${courseId}/workouts/${workout_Id}.json`, {
+			method: "PUT",
+			headers: {
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify({ exercises }), // Отправляем массив объектов
+		});
+		if (!response.ok) {
+			throw new Error(`Ошибка! Статус: ${response.status}`);
+		}
+	} catch (error) {
+		console.warn(error);
+		throw error;
+	}
 }
 
 export async function getRealQuantity(uuid: string, courseId: string, workout_Id: string) {
-    try {
-        const response = await fetch(baseHost + `users/${uuid}/courses/${courseId}/workouts/${workout_Id}.json`, {
-            method: "GET",
-            headers: {
-                "Content-Type": "application/json",
-            },
-        });
-        
-        if (!response.ok) {
-            throw new Error(`Ошибка! Статус: ${response.status}`);
-        }
-        
-        // Парсим ответ и возвращаем данные
-        const data = await response.json();
-		const realQuantity = (data.exercises).map((exercise: any) => exercise.quantity);
+	try {
+		const response = await fetch(baseHost + `users/${uuid}/courses/${courseId}/workouts/${workout_Id}.json`, {
+			method: "GET",
+			headers: {
+				"Content-Type": "application/json",
+			},
+		});
 
-        return realQuantity; 
-    } catch (error) {
-        console.warn(error);
-        throw error;
-    }
+		if (!response.ok) {
+			throw new Error(`Ошибка! Статус: ${response.status}`);
+		}
+
+		// Парсим ответ и возвращаем данные
+		const data = await response.json();
+		const realQuantity = data.exercises.map((exercise: any) => exercise.quantity);
+
+		return realQuantity;
+	} catch (error) {
+		console.warn(error);
+		throw error;
+	}
 }

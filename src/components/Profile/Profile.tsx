@@ -44,7 +44,7 @@ function Profile() {
 	}, []);
 
 	const handleDeleteCourse = (courseId: string) => {
-		setCourseInfoArray(courseInfoArray.filter(course => course._id !== courseId));
+		setCourseInfoArray(courseInfoArray.filter((course) => course._id !== courseId));
 	};
 
 	useEffect(() => {
@@ -55,7 +55,7 @@ function Profile() {
 						userCourses.map(async (course) => {
 							const response = await getCourseById(course.id);
 							return response;
-						})
+						}),
 					);
 					setCourseInfoArray(courseInfoArray);
 					setIsLoaded(true);
@@ -64,7 +64,7 @@ function Profile() {
 				}
 			}
 		}
-	
+
 		fetchCourseInfo();
 	}, [userCourses]);
 
@@ -125,7 +125,7 @@ function Profile() {
 								courseId={courseItem._id}
 								image={courseItem.images.cardImage}
 								nameRu={courseItem.nameRU}
-								onDelete={handleDeleteCourse} 
+								onDelete={handleDeleteCourse}
 							/>
 						))
 					) : (

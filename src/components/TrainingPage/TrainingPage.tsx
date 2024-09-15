@@ -15,7 +15,7 @@ function TrainingPage() {
 	const [exerciseProgress, setExerciseProgress] = useState<number[]>([]); // Добавлено состояние для прогресса упражнений
 	const [isLoading, setIsLoading] = useState(true);
 	const [courseData, setCourseData] = useState<string>();
-	const {user} = useUser();
+	const { user } = useUser();
 
 	const openTrainingProgressModal = () => {
 		setIsTrainingProgressModalOpen(true);
@@ -27,30 +27,23 @@ function TrainingPage() {
 		if (user.uid && courseId) {
 			const exercisesData = Object.entries(updatedQuantities).map(([name, quantity]) => ({
 				name,
-				quantity
+				quantity,
 			}));
 
-			addRealQuantity(
-				user.uid, 
-				courseId, 
-				workout._id, 
-				exercisesData
-			).then(() => {
-				getRealQuantity(
-					user.uid, 
-					courseId, 
-					workout._id
-				).then((data) => {
-					setExerciseProgress(data); // Сохраняем данные о прогрессе упражнений
-				});
-			}).catch((error) => console.error("Ошибка сохранения прогресса:", error));
+			addRealQuantity(user.uid, courseId, workout._id, exercisesData)
+				.then(() => {
+					getRealQuantity(user.uid, courseId, workout._id).then((data) => {
+						setExerciseProgress(data); // Сохраняем данные о прогрессе упражнений
+					});
+				})
+				.catch((error) => console.error("Ошибка сохранения прогресса:", error));
 		} else {
-			console.error('ID тренировки или курса не найдены');
+			console.error("ID тренировки или курса не найдены");
 		}
-	
+
 		setIsSaveTrainingProgressModalOpen(true);
 	};
-	
+
 	useEffect(() => {
 		if (courseId) {
 			getCourseById(courseId)
@@ -78,8 +71,8 @@ function TrainingPage() {
 			getRealQuantity(user.uid, courseId, workout._id)
 				.then((data) => {
 					if (data) {
-						setExerciseProgress(data)
-					};
+						setExerciseProgress(data);
+					}
 				})
 				.catch((error) => console.error(error));
 		}
@@ -92,7 +85,9 @@ function TrainingPage() {
 			) : (
 				<div className="flex flex-col mt-[40px] sm:mt-[60px] gap-[24px] sm:gap-[40px]">
 					<div className="flex flex-col gap-[10px] sm:gap-[24px]">
-						<h2 className="text-[24px] sm:text-[40px] lg:text-[60px] font-medium text-left leading-none">{courseData}</h2>
+						<h2 className="text-[24px] sm:text-[40px] lg:text-[60px] font-medium text-left leading-none">
+							{courseData}
+						</h2>
 						<p className="text-[18px] sm:text-[22px] lg:text-[32px] text-left leading-none underline decoration-solid">
 							{workout.name}
 						</p>
@@ -112,10 +107,10 @@ function TrainingPage() {
 								<div className="flex flex-row justify-center md:justify-start flex-wrap gap-x-[60px] gap-y-[20px]">
 									{exercises.map((exercise, index) => {
 										return (
-											<ExerciseProgress 
-												key={index} 
+											<ExerciseProgress
+												key={index}
 												exercise={exercise}
-												progress={exerciseProgress ? exerciseProgress[index] : 0} 
+												progress={exerciseProgress ? exerciseProgress[index] : 0}
 											/>
 										);
 									})}
