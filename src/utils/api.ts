@@ -298,7 +298,7 @@ export async function getUserName(uuid: string) {
             }
         }
         const data = await response.json();
-        return data.name;
+        return data;
     } catch (error) {
         console.warn(error);
         throw error;

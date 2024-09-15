@@ -33,7 +33,7 @@ function Profile() {
 		setIsEditingName(false);
 		try {
 			await addUserName(user.uid, name);
-			const newName = await getUserName(user.uid);
+			const newName = await getUserName(user.uid).then((data) => data.name);
 			setName(newName);
 		} catch (error) {
 			console.error("Ошибка при сохранении имени:", error);
@@ -56,7 +56,7 @@ function Profile() {
 			try {
 				const response = await getUserCourses(user.uid);
 				setUserCourses(Object.values(response));
-				const savedName = await getUserName(user.uid);
+				const savedName = await getUserName(user.uid).then((data) => data.name);
 				setName(savedName || "Указать имя");
 			} catch (error) {
 				console.error("Ошибка при получении данных пользователя:", error);

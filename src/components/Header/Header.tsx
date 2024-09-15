@@ -26,10 +26,10 @@ const Header: React.FC<HeaderProps> = ({ openModal }) => {
 	};
 
 	useEffect(() => {
-		getUserName(user.uid).then((name) => {
-			setName(name);
-		})
-	})
+		getUserName(user?.uid).then((data) => {
+			setName(data?.name);
+		});
+	});
 
 	useEffect(() => {
 		document.addEventListener("mousedown", handleClickOutside);
@@ -72,7 +72,6 @@ const Header: React.FC<HeaderProps> = ({ openModal }) => {
 								signOut(auth).then(() => {
 									toggleModal();
 									logoutUser();
-									console.log("succes");
 								})
 							}
 							className="flex text-black text-lg font-normal flex-row justify-center items-center p-4 gap-2 w-full h-[52px] border border-black rounded-[46px] hover:bg-[#E9ECED] active:bg-[#000000] active:text-[#FFFFFF]"

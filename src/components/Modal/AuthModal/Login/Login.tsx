@@ -17,8 +17,7 @@ const Login: React.FC<ModalProps> = ({ closeModal, toggleModal, resetModal }) =>
 
 	function login() {
 		signInWithEmailAndPassword(auth, email, password)
-			.then((userCredential) => {
-				console.log(userCredential);
+			.then(() => {
 				setEmail("");
 				setPassword("");
 				closeModal();
