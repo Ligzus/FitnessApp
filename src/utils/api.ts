@@ -173,9 +173,14 @@ export async function getRealQuantity(uuid: string, courseId: string, workout_Id
 
 		// Парсим ответ и возвращаем данные
 		const data = await response.json();
-		const realQuantity = data.exercises.map((exercise: any) => exercise.quantity);
 
-		return realQuantity;
+		if (data !== null) {
+			const realQuantity = data.exercises.map((exercise: any) => exercise.quantity);
+			return realQuantity;
+		} else {
+			return [];
+		}
+		
 	} catch (error) {
 		console.warn(error);
 		throw error;

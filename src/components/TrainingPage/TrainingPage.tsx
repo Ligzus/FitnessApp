@@ -12,9 +12,9 @@ function TrainingPage() {
 	const { id, courseId } = useParams();
 	const [workout, setWorkout] = useState<any>();
 	const [exercises, setExercises] = useState<any[]>([]);
-	const [exerciseProgress, setExerciseProgress] = useState<number[]>([]); // Добавлено состояние для прогресса упражнений
+	const [exerciseProgress, setExerciseProgress] = useState<number[] | null>([]); // Добавлено состояние для прогресса упражнений
 	const [isLoading, setIsLoading] = useState(true);
-	const [courseData, setCourseData] = useState<string>();
+	const [courseData, setCourseData] = useState<string | null>();
 	const { user } = useUser();
 
 	const openTrainingProgressModal = () => {
@@ -74,7 +74,9 @@ function TrainingPage() {
 						setExerciseProgress(data);
 					}
 				})
-				.catch((error) => console.error(error));
+				.catch((error) => 
+					console.error(error)		
+			);
 		}
 	}, [user, courseId, workout]);
 
