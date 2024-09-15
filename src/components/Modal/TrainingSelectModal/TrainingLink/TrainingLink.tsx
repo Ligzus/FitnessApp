@@ -15,7 +15,6 @@ function TrainingLink({ name, trainingId, courseId }: TrainingLinkProps) {
 
 	useEffect(() => {
 		getWorkoutProgress(user.uid, courseId, trainingId).then((response) => {
-			console.log(response);
 			setWorkoutProgress(response.workouts);
 		});
 	}, []);

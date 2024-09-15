@@ -1,15 +1,15 @@
 import { useEffect, useState } from "react";
 import TrainingSelectModal from "../../Modal/TrainingSelectModal/TrainingSelectModal";
 import { CardType } from "../../../types/cards";
-import { deleteCourseToUser, getCourseById, getUserCourse } from "../../../utils/api";
+import { deleteCourseToUser, deleteProgress, getCourseById, getUserCourse } from "../../../utils/api";
 import { useUser } from "../../../hooks/useUser";
 
 type UserCardsProps = CardType & { onDelete: (courseId: string) => void };
 
 function UserCards({ courseId, image, nameRu, onDelete }: UserCardsProps) {
 	const [isTrainingSelectModalOpen, setTrainingSelectModalOpen] = useState(false);
-	const [courseDataLength, setCourseDataLength] = useState<any[]>([]);
-	const [userCourseLength, setUserCourseLength] = useState<any[]>([]);
+	const [courseDataLength, setCourseDataLength] = useState(0);
+	const [userCourseLength, setUserCourseLength] = useState(0);
 	const [userProgress, setUserProgress] = useState<number>(0);
 	const { user } = useUser();
 
@@ -17,26 +17,41 @@ function UserCards({ courseId, image, nameRu, onDelete }: UserCardsProps) {
 	const closeTrainingSelectModal = () => setTrainingSelectModalOpen(false);
 
 	useEffect(() => {
-		getCourseById(courseId).then((data) => {
-			setCourseDataLength(data.workouts);
-		});
-	}, []);
+		const fetchData = async () => {
+			try {
+				const courseData = await getCourseById(courseId);
+				setCourseDataLength(courseData.workouts.length);
+
+				const userData = await getUserCourse(user.uid, courseId);
+				setUserCourseLength(userData ? Object.keys(userData).length : 0);
+			} catch (error) {
+				console.error("Error fetching course data:", error);
+			}
+		};
+		fetchData();
+	}, [courseId, user.uid]);
 
 	useEffect(() => {
-		getUserCourse(user.uid, courseId).then((data) => {
-			let dataArray = [];
-			for (let i = 0; i < Object.keys(data).length; i++) {
-				dataArray.push(data[Object.keys(data)[i]]);
-			}
-			setUserCourseLength(dataArray);
-			changeProgress();
-		});
-	});
+		changeProgress();
+	}, [courseDataLength, userCourseLength]);
+
+	function restartTraining() {
+		deleteProgress(user.uid, courseId)
+			.then(() => {
+				setUserCourseLength(0); // Обновляем состояние после успешного удаления
+				changeProgress();
+			})
+			.catch((error) => {
+				console.error("Ошибка при удалении прогресса:", error);
+			});
+	}
 
 	function changeProgress() {
-		let couseLength = 100 / courseDataLength.length;
-		let progress = couseLength * userCourseLength.length;
-		setUserProgress(Math.ceil(progress));
+		if (courseDataLength > 0) {
+			let courseLength = 100 / courseDataLength;
+			let progress = courseLength * userCourseLength;
+			setUserProgress(Math.ceil(progress));
+		}
 	}
 
 	function deleteCourse() {
@@ -48,6 +63,37 @@ function UserCards({ courseId, image, nameRu, onDelete }: UserCardsProps) {
 				console.error("Ошибка при удалении курса:", error);
 			});
 	}
+
+	const renderButton = () => {
+		if (userProgress === 0) {
+			return (
+				<button
+					onClick={openTrainingSelectModal}
+					className="w-[300px] h-[52px] bg-[#BCEC30] rounded-[46px] hover:bg-[#C6FF00] active:bg-[#000000] active:text-[#FFFFFF] text-lg"
+				>
+					Начать тренировки
+				</button>
+			);
+		} else if (userProgress === 100) {
+			return (
+				<button
+					onClick={restartTraining}
+					className="w-[300px] h-[52px] bg-[#BCEC30] rounded-[46px] hover:bg-[#C6FF00] active:bg-[#000000] active:text-[#FFFFFF] text-lg"
+				>
+					Начать заново
+				</button>
+			);
+		} else {
+			return (
+				<button
+					onClick={openTrainingSelectModal}
+					className="w-[300px] h-[52px] bg-[#BCEC30] rounded-[46px] hover:bg-[#C6FF00] active:bg-[#000000] active:text-[#FFFFFF] text-lg"
+				>
+					Продолжить
+				</button>
+			);
+		}
+	};
 
 	return (
 		<div
@@ -96,12 +142,7 @@ function UserCards({ courseId, image, nameRu, onDelete }: UserCardsProps) {
 						</div>
 					</div>
 					<div className="items-center mt-[40px]">
-						<button
-							onClick={openTrainingSelectModal}
-							className="w-[300px] h-[52px] bg-[#BCEC30] rounded-[46px] hover:bg-[#C6FF00] active:bg-[#000000] active:text-[#FFFFFF] text-lg"
-						>
-							Продолжить
-						</button>
+						{renderButton()}
 						{isTrainingSelectModalOpen && (
 							<TrainingSelectModal courseId={courseId} closeModal={closeTrainingSelectModal} />
 						)}

@@ -245,3 +245,20 @@ export async function getWorkoutProgress(uuid: string, courseId: string, workout
 		throw error;
 	}
 }
+
+export async function deleteProgress(uuid: string, courseId: string) {
+	try {
+        const response = await fetch(baseHost + `users/${uuid}/courses/${courseId}/workouts.json`, {
+            method: "DELETE",
+            headers: {
+                "Content-Type": "application/json",
+            },
+        });
+        if (!response.ok) {
+            throw new Error(`Ошибка! Статус: ${response.status}`);
+        }
+    } catch (error) {
+        console.warn(error);
+        throw error;
+    }
+}
