@@ -3,7 +3,7 @@ import UserCards from "../Card/UserCards/UserCards";
 import PasswordChange from "../Modal/PasswordChange/PasswordChange";
 import PasswordChangeSuccess from "../Modal/PasswordChange/PasswordChangeSuccess";
 import { useUser } from "../../hooks/useUser"; // Используем контекст пользователя
-import { getCourseById, getUserCourses } from "../../utils/api";
+import { addUserName, getCourseById, getUserCourses, getUserName } from "../../utils/api";
 
 function Profile() {
 	const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false);
@@ -12,6 +12,8 @@ function Profile() {
 	const [isLoaded, setIsLoaded] = useState(false);
 	const [userCourses, setUserCourses] = useState<any[]>([]);
 	const [courseInfoArray, setCourseInfoArray] = useState<any[]>([]);
+	const [isEditingName, setIsEditingName] = useState(false);
+	const [name, setName] = useState<string | undefined>();
 
 	const openPasswordModal = () => {
 		setIsPasswordModalOpen(true);
@@ -23,6 +25,25 @@ function Profile() {
 		setIsPasswordChanged(true);
 	};
 
+	const handleEditName = () => {
+		setIsEditingName(true);
+	};
+
+	const handleSaveName = async () => {
+		setIsEditingName(false);
+		try {
+			await addUserName(user.uid, name);
+			const newName = await getUserName(user.uid);
+			setName(newName);
+		} catch (error) {
+			console.error("Ошибка при сохранении имени:", error);
+		}
+	};
+
+	const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+		setName(e.target.value);
+	};
+
 	function scrollToCourses() {
 		const element = document.getElementById("my_courses");
 		if (element) {
@@ -31,17 +52,19 @@ function Profile() {
 	}
 
 	useEffect(() => {
-		async function fetchUserCourses() {
-			let responseArray = [];
-			const response = await getUserCourses(user.uid);
-			for (let i = 0; i < Object.keys(response).length; i++) {
-				responseArray.push(response[Object.keys(response)[i]]);
+		async function fetchUserInfo() {
+			try {
+				const response = await getUserCourses(user.uid);
+				setUserCourses(Object.values(response));
+				const savedName = await getUserName(user.uid);
+				setName(savedName || "Указать имя");
+			} catch (error) {
+				console.error("Ошибка при получении данных пользователя:", error);
 			}
-			setUserCourses(responseArray);
 		}
 
-		fetchUserCourses();
-	}, []);
+		fetchUserInfo();
+	}, [user.uid]);
 
 	const handleDeleteCourse = (courseId: string) => {
 		setCourseInfoArray(courseInfoArray.filter((course) => course._id !== courseId));
@@ -85,11 +108,31 @@ function Profile() {
 					</div>
 
 					<div className="flex-col items-start mt-[28px] sm:mt-[0px]">
-						<p className="text-[24px] sm:text-[32px] font-medium text-start mb-[18px] sm:mb-[30px]">Сергей</p>
+						<div className="flex flex-row gap-[15px]">
+							{isEditingName ? (
+								<input
+									type="text"
+									placeholder="Указать имя"
+									onChange={handleNameChange}
+									className="text-[24px] sm:text-[32px] text-start mb-[18px] sm:mb-[30px] text-[#999999] border-solid border-[1px] border-[#D3D3D3] rounded-[8px] outline-none pl-1.5"
+								/>
+							) : (
+								<p className="text-[24px] sm:text-[32px] font-medium text-start mb-[18px] sm:mb-[30px]">{name === undefined ? 'Указать имя' : name}</p>
+							)}
+							<button className="flex items-end h-[48px]" onClick={isEditingName ? handleSaveName : handleEditName}>
+								<svg className="w-[35px] h-[35px]">
+									{isEditingName ? (
+										<use xlinkHref="./icon/sprite.svg#icon-save" />
+									) : (
+										<use xlinkHref="./icon/sprite.svg#icon-pencil" />
+									)}
+								</svg>
+							</button>
+						</div>
 
 						<div className="flex flex-col items-start mb-[20px] sm:mb-[30px]">
 							<p>Логин: {user.email}</p> {/* Используем email из контекста */}
-							<p>Пароль: 4fkhdj880d</p> {/* Пример пароля (заглушка) */}
+							<p>Пароль: **********</p> {/* Пример пароля (заглушка) */}
 						</div>
 
 						<div className="flex-col flex sm:flex-row gap-[10px]">

@@ -262,3 +262,45 @@ export async function deleteProgress(uuid: string, courseId: string) {
         throw error;
     }
 }
+
+export async function addUserName(uuid: string, name: string | undefined) {
+	try {
+		const response = await fetch(baseHost + `users/${uuid}.json`, {
+			method: "PATCH",
+			headers: {
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify({
+				name: `${name}`,
+			}),
+		});
+		if (!response.ok) {
+			if (response.status === 401) {
+				throw new Error("Невозможно добавить имя");
+			} else {
+				throw new Error(`Ошибка! Статус: ${response.status}`);
+			}
+		}
+	} catch (error) {
+		console.warn(error);
+		throw error;
+	}
+}
+
+export async function getUserName(uuid: string) {
+	try {
+        const response = await fetch(baseHost + `users/${uuid}.json`);
+        if (!response.ok) {
+            if (response.status === 401) {
+                throw new Error("Невозможно получить имя");
+            } else {
+                throw new Error(`Ошибка! Статус: ${response.status}`);
+            }
+        }
+        const data = await response.json();
+        return data.name;
+    } catch (error) {
+        console.warn(error);
+        throw error;
+    }
+}
