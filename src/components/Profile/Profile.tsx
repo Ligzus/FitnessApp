@@ -4,6 +4,7 @@ import PasswordChange from "../Modal/PasswordChange/PasswordChange";
 import PasswordChangeSuccess from "../Modal/PasswordChange/PasswordChangeSuccess";
 import { useUser } from "../../hooks/useUser";
 import { addUserName, getCourseById, getUserCourses, getUserName } from "../../utils/api";
+import { useNavigate } from "react-router-dom";
 
 function Profile() {
 	const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false);
@@ -14,6 +15,12 @@ function Profile() {
 	const [isEditingName, setIsEditingName] = useState(false);
 	const [name, setName] = useState<string | undefined>();
 	const [isLoading, setIsLoading] = useState(true);
+	const navigate = useNavigate();
+
+	const logout = () => {
+		logoutUser();
+		navigate("/");
+	}
 
 	const openPasswordModal = () => {
 		setIsPasswordModalOpen(true);
@@ -154,7 +161,7 @@ function Profile() {
 								Изменить пароль
 							</button>
 							<button
-								onClick={logoutUser}
+								onClick={logout}
 								className="w-[300px] h-[50px] sm:w-[192px] sm:h-[52px] border border-black bg-[#ffffff] rounded-[46px] hover:bg-[#E9ECED] active:bg-[#000000] active:text-[#FFFFFF] text-lg"
 							>
 								Выйти
