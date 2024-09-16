@@ -22,6 +22,7 @@ const Register: React.FC<ModalProps> = ({ closeModal, toggleModal }) => {
 
 		createUserWithEmailAndPassword(auth, email, password)
 			.then((userCredential) => {
+				console.log(userCredential);
 				setEmail("");
 				setPassword("");
 				setcopyPassword("");

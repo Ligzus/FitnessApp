@@ -3,7 +3,7 @@ import TrainingProgressModal from "../Modal/TrainingProgressModal/TrainingProgre
 import SaveTrainingProgressModal from "../Modal/TrainingProgressModal/SaveTrainingProgressModal";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { addRealQuantity, addWorkoutProgress, getCourseById, getRealQuantity, getWorkoutsById } from "../../utils/api";
+import { addRealQuantity, getCourseById, getRealQuantity, getWorkoutsById } from "../../utils/api";
 import { useUser } from "../../hooks/useUser";
 
 function TrainingPage() {
@@ -32,7 +32,6 @@ function TrainingPage() {
 
 			addRealQuantity(user.uid, courseId, workout._id, exercisesData)
 				.then(() => {
-					addWorkoutProgress(user.uid, courseId, workout._id, 100);
 					getRealQuantity(user.uid, courseId, workout._id).then((data) => {
 						setExerciseProgress(data); // Сохраняем данные о прогрессе упражнений
 					});
@@ -75,7 +74,9 @@ function TrainingPage() {
 						setExerciseProgress(data);
 					}
 				})
-				.catch((error) => console.error(error));
+				.catch((error) => 
+					console.error(error)		
+			);
 		}
 	}, [user, courseId, workout]);
 
