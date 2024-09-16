@@ -1,9 +1,10 @@
 import ExerciseProgress from "./ExerciseProgress/ExerciseProgress";
-import TrainingProgressModal from "../Modal/TrainingProgressModal/TrainingProgressModal";
+import TrainingProgressModal from "../Modal/TrainingProgressModal/TrainingProgress/TrainingProgressModal";
 import SaveTrainingProgressModal from "../Modal/TrainingProgressModal/SaveTrainingProgressModal";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { getCourseById, getWorkoutsById } from "../../utils/api";
+import { addRealQuantity, getCourseById, getRealQuantity, getWorkoutsById } from "../../utils/api";
+import { useUser } from "../../hooks/useUser";
 
 function TrainingPage() {
 	const [isTrainingProgressModalOpen, setIsTrainingProgressModalOpen] = useState(false);
@@ -11,8 +12,10 @@ function TrainingPage() {
 	const { id, courseId } = useParams();
 	const [workout, setWorkout] = useState<any>();
 	const [exercises, setExercises] = useState<any[]>([]);
+	const [exerciseProgress, setExerciseProgress] = useState<number[] | null>([]); // Добавлено состояние для прогресса упражнений
 	const [isLoading, setIsLoading] = useState(true);
-	const [courseData, setCourseData] = useState<string>();
+	const [courseData, setCourseData] = useState<string | null>();
+	const { user } = useUser();
 
 	const openTrainingProgressModal = () => {
 		setIsTrainingProgressModalOpen(true);
@@ -20,7 +23,26 @@ function TrainingPage() {
 	};
 	const closeTrainingProgressModal = () => setIsTrainingProgressModalOpen(false);
 
-	const handleSaveTrainingProgress = () => setIsSaveTrainingProgressModalOpen(true);
+	const handleSaveTrainingProgress = (updatedQuantities: { [exerciseName: string]: number }) => {
+		if (user.uid && courseId) {
+			const exercisesData = Object.entries(updatedQuantities).map(([name, quantity]) => ({
+				name,
+				quantity,
+			}));
+
+			addRealQuantity(user.uid, courseId, workout._id, exercisesData)
+				.then(() => {
+					getRealQuantity(user.uid, courseId, workout._id).then((data) => {
+						setExerciseProgress(data); // Сохраняем данные о прогрессе упражнений
+					});
+				})
+				.catch((error) => console.error("Ошибка сохранения прогресса:", error));
+		} else {
+			console.error("ID тренировки или курса не найдены");
+		}
+
+		setIsSaveTrainingProgressModalOpen(true);
+	};
 
 	useEffect(() => {
 		if (courseId) {
@@ -44,6 +66,20 @@ function TrainingPage() {
 		}
 	}, [id]);
 
+	useEffect(() => {
+		if (user.uid && courseId && workout) {
+			getRealQuantity(user.uid, courseId, workout._id)
+				.then((data) => {
+					if (data) {
+						setExerciseProgress(data);
+					}
+				})
+				.catch((error) => 
+					console.error(error)		
+			);
+		}
+	}, [user, courseId, workout]);
+
 	return (
 		<>
 			{isLoading ? (
@@ -51,7 +87,9 @@ function TrainingPage() {
 			) : (
 				<div className="flex flex-col mt-[40px] sm:mt-[60px] gap-[24px] sm:gap-[40px]">
 					<div className="flex flex-col gap-[10px] sm:gap-[24px]">
-						<h2 className="text-[24px] sm:text-[40px] lg:text-[60px] font-medium text-left leading-none">{courseData}</h2>
+						<h2 className="text-[24px] sm:text-[40px] lg:text-[60px] font-medium text-left leading-none">
+							{courseData}
+						</h2>
 						<p className="text-[18px] sm:text-[22px] lg:text-[32px] text-left leading-none underline decoration-solid">
 							{workout.name}
 						</p>
@@ -69,9 +107,15 @@ function TrainingPage() {
 							<>
 								<h3 className="text-[32px] text-center md:text-start leading-9">Упражнения тренировки</h3>
 								<div className="flex flex-row justify-center md:justify-start flex-wrap gap-x-[60px] gap-y-[20px]">
-									{exercises.map((exercise, index) => (
-										<ExerciseProgress key={index} name={exercise.name} />
-									))}
+									{exercises.map((exercise, index) => {
+										return (
+											<ExerciseProgress
+												key={index}
+												exercise={exercise}
+												progress={exerciseProgress ? exerciseProgress[index] : 0}
+											/>
+										);
+									})}
 								</div>
 								<button
 									onClick={openTrainingProgressModal}
@@ -83,6 +127,9 @@ function TrainingPage() {
 									<TrainingProgressModal
 										closeModal={closeTrainingProgressModal}
 										onSubmit={handleSaveTrainingProgress}
+										exercises={exercises}
+										workout_Id={workout._id}
+										exerciseProgress={exerciseProgress}
 									/>
 								)}
 								{isTrainingProgressModalOpen && isSaveTrainingProgressModalOpen && (

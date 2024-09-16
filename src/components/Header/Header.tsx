@@ -3,6 +3,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import { auth } from "../../utils/firebase";
 import { useUser } from "../../hooks/useUser";
+import { getUserName } from "../../utils/api";
 
 interface HeaderProps {
 	openModal: () => void;
@@ -12,6 +13,7 @@ const Header: React.FC<HeaderProps> = ({ openModal }) => {
 	const [modalVisible, setModalVisible] = useState(false);
 	const modalRef = useRef<HTMLDivElement>(null);
 	const { user, logoutUser } = useUser();
+	const [name, setName] = useState<string | undefined>();
 
 	const toggleModal = () => {
 		setModalVisible((prevModalVisible) => !prevModalVisible);
@@ -22,6 +24,12 @@ const Header: React.FC<HeaderProps> = ({ openModal }) => {
 			setModalVisible(false);
 		}
 	};
+
+	useEffect(() => {
+		getUserName(user?.uid).then((data) => {
+			setName(data?.name);
+		});
+	});
 
 	useEffect(() => {
 		document.addEventListener("mousedown", handleClickOutside);
@@ -45,8 +53,9 @@ const Header: React.FC<HeaderProps> = ({ openModal }) => {
 							: "hidden"
 					}
 				>
-					<div className="mb-[30px]">
-						<p className="text-[18px] font-medium text-center">{user?.email}</p>
+					<div className="mb-[30px] flex gap-[10px] flex-col">
+						<p className="text-[18px] font-normal text-center">{name === undefined ? user?.email : name}</p>
+						<p className="text-[16px] font-normal text-center text-[#999999]">{user?.email}</p>
 					</div>
 
 					<div className="flex flex-col items-center gap-4">
@@ -63,7 +72,6 @@ const Header: React.FC<HeaderProps> = ({ openModal }) => {
 								signOut(auth).then(() => {
 									toggleModal();
 									logoutUser();
-									console.log("succes");
 								})
 							}
 							className="flex text-black text-lg font-normal flex-row justify-center items-center p-4 gap-2 w-full h-[52px] border border-black rounded-[46px] hover:bg-[#E9ECED] active:bg-[#000000] active:text-[#FFFFFF]"
@@ -75,7 +83,7 @@ const Header: React.FC<HeaderProps> = ({ openModal }) => {
 				{user ? (
 					<div onClick={toggleModal} className="flex gap-[12px] items-center cursor-pointer">
 						<img src="/profile-photo-mini.svg" alt="profile-photo-mini" />
-						<p className="hidden sm:block text-[24px]">{user.email}</p>
+						<p className="hidden sm:block text-[24px]">{name === undefined ? user?.email : name}</p>
 
 						<svg
 							className="hidden sm:block"

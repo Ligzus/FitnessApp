@@ -9,16 +9,15 @@ function Card({ courseId, image, nameRu }: CardType) {
 	function addCourse(event: React.MouseEvent<HTMLButtonElement>) {
 		event.stopPropagation();
 		event.preventDefault();
-	
+
 		addCourseToUser(user.uid, courseId)
 			.then(() => {
 				console.log("Курс добавлен в избранное");
 			})
 			.catch((error) => {
 				console.error("Ошибка при добавлении курса:", error);
-		});
+			});
 	}
-	
 
 	return (
 		<Link
