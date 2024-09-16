@@ -8,7 +8,7 @@ import { addUserName, getCourseById, getUserCourses, getUserName } from "../../u
 function Profile() {
   const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false);
   const [isPasswordChanged, setIsPasswordChanged] = useState(false);
-  const { user, logoutUser } = useUser();
+  const { user, logoutUser, loginUser } = useUser();
   const [userCourses, setUserCourses] = useState<any[]>([]);
   const [courseInfoArray, setCourseInfoArray] = useState<any[]>([]);
   const [isEditingName, setIsEditingName] = useState(false);
@@ -36,6 +36,8 @@ function Profile() {
       await addUserName(user.uid, name);
       const newName = await getUserName(user.uid).then((data) => data.name);
       setName(newName);
+      // Обновляем имя в контексте
+      loginUser({ ...user, displayName: newName });
     } catch (error) {
       console.error("Ошибка при сохранении имени:", error);
     }
@@ -56,18 +58,18 @@ function Profile() {
     async function fetchUserInfo() {
       try {
         const response = await getUserCourses(user.uid);
-		if (response) {
-			setUserCourses(Object.values(response));
-			const savedName = await getUserName(user.uid).then((data) => data.name);
-			setName(savedName || "Указать имя");
-			setIsLoading(false); // Данные загружены
-		}        
+        if (response) {
+          setUserCourses(Object.values(response));
+          const savedName = await getUserName(user.uid).then((data) => data.name);
+          setName(savedName || "Указать имя");
+          setIsLoading(false); // Данные загружены
+        }
       } catch (error) {
         console.error("Ошибка при получении данных пользователя:", error);
         setIsLoading(false); // Если ошибка, загрузка все равно заканчивается
       } finally {
-		setIsLoading(false);
-	  }
+        setIsLoading(false);
+      }
     }
 
     fetchUserInfo();
@@ -119,6 +121,7 @@ function Profile() {
                 <input
                   type="text"
                   placeholder="Указать имя"
+                  value={name}
                   onChange={handleNameChange}
                   className="text-[24px] sm:text-[32px] text-start mb-[18px] sm:mb-[30px] text-[#999999] border-solid border-[1px] border-[#D3D3D3] rounded-[8px] outline-none pl-1.5"
                 />
