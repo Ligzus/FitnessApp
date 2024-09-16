@@ -6,19 +6,19 @@ import CoursePage from "./CoursePage";
 
 // Мокируем хук useUser
 jest.mock("../../hooks/useUser", () => ({
-  useUser: () => ({
-    user: { uid: "test-uid" }
-  })
+	useUser: () => ({
+		user: { uid: "test-uid" },
+	}),
 }));
 
 describe("CoursePage", () => {
-  it("snapshot", () => {
-    const { asFragment } = render(
-      <Router>
-        <CoursePage openModal={() => {}} />
-      </Router>
-    );
+	it("snapshot", () => {
+		const { asFragment } = render(
+			<Router>
+				<CoursePage openModal={() => {}} />
+			</Router>,
+		);
 
-    expect(asFragment()).toMatchSnapshot();
-  });
+		expect(asFragment()).toMatchSnapshot();
+	});
 });

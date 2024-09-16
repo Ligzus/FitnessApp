@@ -31,10 +31,9 @@ function CoursePage({ openModal }: CoursePageProps) {
 	}, [id]);
 
 	function addCourse() {
-		addCourseToUser(user.uid, course._id)			
-			.catch((error) => {
-				console.error("Ошибка при добавлении курса:", error);
-			});
+		addCourseToUser(user.uid, course._id).catch((error) => {
+			console.error("Ошибка при добавлении курса:", error);
+		});
 	}
 
 	useEffect(() => {
@@ -172,9 +171,10 @@ function CoursePage({ openModal }: CoursePageProps) {
 												Добавить курс
 											</button>
 										) : (
-											<button 
+											<button
 												onClick={openModal}
-												className="w-full h-[50px] bg-[#BCEC30] rounded-[40px] hover:bg-[#C6FF00] active:bg-[#000000] active:text-[#FFFFFF] md:text-lg mt-[20px] sm:mt-[28px]">
+												className="w-full h-[50px] bg-[#BCEC30] rounded-[40px] hover:bg-[#C6FF00] active:bg-[#000000] active:text-[#FFFFFF] md:text-lg mt-[20px] sm:mt-[28px]"
+											>
 												Войдите, чтобы добавить курс
 											</button>
 										)}
