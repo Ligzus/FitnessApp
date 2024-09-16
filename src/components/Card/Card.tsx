@@ -11,9 +11,6 @@ function Card({ courseId, image, nameRu }: CardType) {
 		event.preventDefault();
 
 		addCourseToUser(user.uid, courseId)
-			.then(() => {
-				console.log("Курс добавлен в избранное");
-			})
 			.catch((error) => {
 				console.error("Ошибка при добавлении курса:", error);
 			});

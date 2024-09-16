@@ -70,9 +70,7 @@ export async function deleteCourseToUser(uuid: string, courseId: string) {
 		method: "DELETE",
 	})
 		.then((response) => {
-			if (response.ok) {
-				console.log("Курс успешно удален");
-			} else {
+			if (!response.ok) {
 				console.error("Ошибка при удалении курса");
 			}
 		})

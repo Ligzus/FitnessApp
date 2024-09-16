@@ -31,10 +31,7 @@ function CoursePage({ openModal }: CoursePageProps) {
 	}, [id]);
 
 	function addCourse() {
-		addCourseToUser(user.uid, course._id)
-			.then(() => {
-				console.log("Курс добавлен в избранное");
-			})
+		addCourseToUser(user.uid, course._id)			
 			.catch((error) => {
 				console.error("Ошибка при добавлении курса:", error);
 			});
