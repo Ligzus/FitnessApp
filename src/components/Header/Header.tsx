@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { signOut } from "firebase/auth";
 import { auth } from "../../utils/firebase";
 import { useUser } from "../../hooks/useUser";
@@ -14,6 +14,8 @@ const Header: React.FC<HeaderProps> = ({ openModal }) => {
   const modalRef = useRef<HTMLDivElement>(null);
   const { user, logoutUser } = useUser();
   const [name, setName] = useState<string | undefined>(user?.displayName);
+  const navigate = useNavigate();
+
 
   const toggleModal = () => {
     setModalVisible((prevModalVisible) => !prevModalVisible);
@@ -72,6 +74,7 @@ const Header: React.FC<HeaderProps> = ({ openModal }) => {
                 signOut(auth).then(() => {
                   toggleModal();
                   logoutUser();
+                  navigate("/");
                 })
               }
               className="flex text-black text-lg font-normal flex-row justify-center items-center p-4 gap-2 w-full h-[52px] border border-black rounded-[46px] hover:bg-[#E9ECED] active:bg-[#000000] active:text-[#FFFFFF]"
