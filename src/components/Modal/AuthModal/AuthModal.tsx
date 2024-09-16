@@ -20,7 +20,7 @@ const AuthModal: React.FC<AuthModalProps> = ({ closeModal }) => {
 	};
 
 	return (
-		<div className="fixed inset-0 flex justify-center items-center bg-gray-900 bg-opacity-50">
+		<div className="fixed z-40 inset-0 flex justify-center items-center bg-gray-900 bg-opacity-50">
 			<div
 				className="relative p-10 gap-12 w-[360px] bg-white shadow-lg rounded-[30px]"
 				onClick={(e) => e.stopPropagation()}

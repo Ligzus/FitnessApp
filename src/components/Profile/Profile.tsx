@@ -2,23 +2,31 @@ import { useEffect, useState } from "react";
 import UserCards from "../Card/UserCards/UserCards";
 import PasswordChange from "../Modal/PasswordChange/PasswordChange";
 import PasswordChangeSuccess from "../Modal/PasswordChange/PasswordChangeSuccess";
-import { useUser } from "../../hooks/useUser"; // Используем контекст пользователя
+import { useUser } from "../../hooks/useUser";
 import { addUserName, getCourseById, getUserCourses, getUserName } from "../../utils/api";
+import { useNavigate } from "react-router-dom";
 
 function Profile() {
 	const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false);
 	const [isPasswordChanged, setIsPasswordChanged] = useState(false);
-	const { user, logoutUser } = useUser(); // Получаем пользователя и метод выхода
-	const [isLoaded, setIsLoaded] = useState(false);
+	const { user, logoutUser, loginUser } = useUser();
 	const [userCourses, setUserCourses] = useState<any[]>([]);
 	const [courseInfoArray, setCourseInfoArray] = useState<any[]>([]);
 	const [isEditingName, setIsEditingName] = useState(false);
 	const [name, setName] = useState<string | undefined>();
+	const [isLoading, setIsLoading] = useState(true);
+	const navigate = useNavigate();
+
+	const logout = () => {
+		logoutUser();
+		navigate("/");
+	}
 
 	const openPasswordModal = () => {
 		setIsPasswordModalOpen(true);
 		setIsPasswordChanged(false);
 	};
+
 	const closePasswordModal = () => setIsPasswordModalOpen(false);
 
 	const handlePasswordChange = () => {
@@ -35,6 +43,8 @@ function Profile() {
 			await addUserName(user.uid, name);
 			const newName = await getUserName(user.uid).then((data) => data.name);
 			setName(newName);
+			// Обновляем имя в контексте
+			loginUser({ ...user, displayName: newName });
 		} catch (error) {
 			console.error("Ошибка при сохранении имени:", error);
 		}
@@ -55,11 +65,17 @@ function Profile() {
 		async function fetchUserInfo() {
 			try {
 				const response = await getUserCourses(user.uid);
-				setUserCourses(Object.values(response));
-				const savedName = await getUserName(user.uid).then((data) => data.name);
-				setName(savedName || "Указать имя");
+				if (response) {
+					setUserCourses(Object.values(response));
+					const savedName = await getUserName(user.uid).then((data) => data.name);
+					setName(savedName || "Указать имя");
+					setIsLoading(false); // Данные загружены
+				}
 			} catch (error) {
 				console.error("Ошибка при получении данных пользователя:", error);
+				setIsLoading(false); // Если ошибка, загрузка все равно заканчивается
+			} finally {
+				setIsLoading(false);
 			}
 		}
 
@@ -81,7 +97,6 @@ function Profile() {
 						}),
 					);
 					setCourseInfoArray(courseInfoArray);
-					setIsLoaded(true);
 				} catch (error) {
 					console.error("Ошибка при получении информации о курсе:", error);
 				}
@@ -113,11 +128,14 @@ function Profile() {
 								<input
 									type="text"
 									placeholder="Указать имя"
+									value={name}
 									onChange={handleNameChange}
 									className="text-[24px] sm:text-[32px] text-start mb-[18px] sm:mb-[30px] text-[#999999] border-solid border-[1px] border-[#D3D3D3] rounded-[8px] outline-none pl-1.5"
 								/>
 							) : (
-								<p className="text-[24px] sm:text-[32px] font-medium text-start mb-[18px] sm:mb-[30px]">{name === undefined ? 'Указать имя' : name}</p>
+								<p className="text-[24px] sm:text-[32px] font-medium text-start mb-[18px] sm:mb-[30px]">
+									{name === undefined ? "Указать имя" : name}
+								</p>
 							)}
 							<button className="flex items-end h-[48px]" onClick={isEditingName ? handleSaveName : handleEditName}>
 								<svg className="w-[35px] h-[35px]">
@@ -131,8 +149,8 @@ function Profile() {
 						</div>
 
 						<div className="flex flex-col items-start mb-[20px] sm:mb-[30px]">
-							<p>Логин: {user.email}</p> {/* Используем email из контекста */}
-							<p>Пароль: **********</p> {/* Пример пароля (заглушка) */}
+							<p>Логин: {user.email}</p>
+							<p>Пароль: **********</p>
 						</div>
 
 						<div className="flex-col flex sm:flex-row gap-[10px]">
@@ -143,7 +161,7 @@ function Profile() {
 								Изменить пароль
 							</button>
 							<button
-								onClick={logoutUser}
+								onClick={logout}
 								className="w-[300px] h-[50px] sm:w-[192px] sm:h-[52px] border border-black bg-[#ffffff] rounded-[46px] hover:bg-[#E9ECED] active:bg-[#000000] active:text-[#FFFFFF] text-lg"
 							>
 								Выйти
@@ -161,7 +179,7 @@ function Profile() {
 					Мои курсы
 				</h2>
 				<div className="flex flex-row flex-wrap gap-10 justify-start">
-					{isLoaded ? (
+					{courseInfoArray.length > 0 ? (
 						courseInfoArray.map((courseItem: any) => (
 							<UserCards
 								key={courseItem._id}
@@ -171,10 +189,10 @@ function Profile() {
 								onDelete={handleDeleteCourse}
 							/>
 						))
+					) : isLoading ? (
+						<p>Страница загружается...</p>
 					) : (
-						<div>
-							<p>Страница загружается</p>
-						</div>
+						<p>У вас пока нет активных курсов</p>
 					)}
 				</div>
 
@@ -191,7 +209,6 @@ function Profile() {
 			{isPasswordModalOpen && !isPasswordChanged && (
 				<PasswordChange closeModal={closePasswordModal} onSubmit={handlePasswordChange} />
 			)}
-
 			{isPasswordModalOpen && isPasswordChanged && <PasswordChangeSuccess closeModal={closePasswordModal} />}
 		</div>
 	);

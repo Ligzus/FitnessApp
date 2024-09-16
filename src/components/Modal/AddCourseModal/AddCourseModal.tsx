@@ -4,7 +4,7 @@ interface ModalProps {
 	closeModal: () => void;
 }
 
-const SaveTrainingProgressModal: React.FC<ModalProps> = ({ closeModal }) => {
+const AddCourseModal: React.FC<ModalProps> = ({ closeModal }) => {
 	return (
 		<div className="fixed z-40 inset-0 flex justify-center items-center bg-gray-900 bg-opacity-50" onClick={closeModal}>
 			<div
@@ -12,7 +12,7 @@ const SaveTrainingProgressModal: React.FC<ModalProps> = ({ closeModal }) => {
 				onClick={(e) => e.stopPropagation()}
 			>
 				<div className="flex flex-col items-center gap-8 w-[280px] h-[auto]">
-					<h2 className="text-[32px] font-medium text-center">Ваш прогресс засчитан!</h2>
+					<h2 className="text-[32px] font-medium text-center">Курс успешно добавлен!</h2>
 
 					<svg
 						className="mb-[10px]"
@@ -35,4 +35,4 @@ const SaveTrainingProgressModal: React.FC<ModalProps> = ({ closeModal }) => {
 	);
 };
 
-export default SaveTrainingProgressModal;
+export default AddCourseModal;

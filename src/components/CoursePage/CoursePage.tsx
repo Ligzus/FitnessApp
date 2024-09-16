@@ -3,7 +3,11 @@ import { addCourseToUser, getCourse } from "../../utils/api";
 import { useEffect, useState } from "react";
 import { useUser } from "../../hooks/useUser";
 
-function CoursePage() {
+interface CoursePageProps {
+	openModal: () => void;
+}
+
+function CoursePage({ openModal }: CoursePageProps) {
 	const { id } = useParams(); // Получаем ID из URL
 	const [course, setCourse] = useState<any>(null);
 	const [isLoading, setIsLoading] = useState(true);
@@ -27,13 +31,9 @@ function CoursePage() {
 	}, [id]);
 
 	function addCourse() {
-		addCourseToUser(user.uid, course._id)
-			.then(() => {
-				console.log("Курс добавлен в избранное");
-			})
-			.catch((error) => {
-				console.error("Ошибка при добавлении курса:", error);
-			});
+		addCourseToUser(user.uid, course._id).catch((error) => {
+			console.error("Ошибка при добавлении курса:", error);
+		});
 	}
 
 	useEffect(() => {
@@ -171,7 +171,10 @@ function CoursePage() {
 												Добавить курс
 											</button>
 										) : (
-											<button className="w-full h-[50px] bg-[#BCEC30] rounded-[40px] hover:bg-[#C6FF00] active:bg-[#000000] active:text-[#FFFFFF] md:text-lg mt-[20px] sm:mt-[28px]">
+											<button
+												onClick={openModal}
+												className="w-full h-[50px] bg-[#BCEC30] rounded-[40px] hover:bg-[#C6FF00] active:bg-[#000000] active:text-[#FFFFFF] md:text-lg mt-[20px] sm:mt-[28px]"
+											>
 												Войдите, чтобы добавить курс
 											</button>
 										)}
