@@ -12,7 +12,7 @@ jest.mock("../../hooks/useUser", () => ({
 }));
 
 describe("CoursePage", () => {
-  it("matches snapshot", () => {
+  it("snapshot", () => {
     const { asFragment } = render(
       <Router>
         <CoursePage openModal={() => {}} />

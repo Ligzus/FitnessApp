@@ -3,7 +3,7 @@ import '@testing-library/jest-dom';
 import ExerciseProgress from './ExerciseProgress';
 
 describe('ExerciseProgress', () => {
-  test('should render correctly with progress', () => {
+  test('Должен корректно отображаться с прогрессом', () => {
     const exercise = { name: 'Push Ups', quantity: 20 };
     const progress = 10;
 
@@ -14,7 +14,7 @@ describe('ExerciseProgress', () => {
     expect(progressBar).toHaveStyle('width: 50%');
   });
 
-  test('should render correctly without progress', () => {
+  test('Должен корректно отображаться без прогресса', () => {
     const exercise = { name: 'Push Ups', quantity: 20 };
     const progress = 0;
 
@@ -25,7 +25,7 @@ describe('ExerciseProgress', () => {
     expect(progressBar).toHaveStyle('width: 0%');
   });
 
-  test('should render correctly when progress is greater than required', () => {
+  test('Должен корректно отображаться, когда прогресс больше требуемого', () => {
     const exercise = { name: 'Push Ups', quantity: 20 };
     const progress = 30;
 
