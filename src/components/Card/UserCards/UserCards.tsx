@@ -22,6 +22,26 @@ function UserCards({ courseId, image, nameRu, onDelete }: UserCardsProps) {
   const openTrainingSelectModal = () => setTrainingSelectModalOpen(true);
   const closeTrainingSelectModal = () => setTrainingSelectModalOpen(false);
 
+  function openResetedTrainingSelectModal(courseId: string) {    
+    // Очищаем прогресс из localStorage
+    localStorage.removeItem(`progress_${courseId}`);
+  
+    // Очищаем все ссылки на тренировки данного курса
+    const visitedLinks = JSON.parse(localStorage.getItem("visitedLinks") || "[]");
+    const filteredLinks = visitedLinks.filter((link: string) => !link.startsWith(`/training/${courseId}/`));
+    localStorage.setItem("visitedLinks", JSON.stringify(filteredLinks));
+  
+    // Обновляем состояние прогресса
+    setVisitedRatio("0");
+  
+    // Открываем модальное окно
+    openTrainingSelectModal();
+  }
+
+  const handleResetedTrainingSelectModalClick = () => {
+    openResetedTrainingSelectModal(courseId);
+  };
+
   function deleteCourse() {
 	deleteCourseToUser(user.uid, courseId)
 		.then(() => {
@@ -93,12 +113,22 @@ function UserCards({ courseId, image, nameRu, onDelete }: UserCardsProps) {
             </div>
           </div>
           <div className="items-center mt-[40px]">
-            <button
-              onClick={openTrainingSelectModal}
-              className="w-[300px] h-[52px] bg-[#BCEC30] rounded-[46px] hover:bg-[#C6FF00] active:bg-[#000000] active:text-[#FFFFFF] text-lg"
-            >
-              Продолжить
-            </button>
+            { visitedRatio !== "100" ? (
+                <button
+                  onClick={openTrainingSelectModal}
+                  className="w-[300px] h-[52px] bg-[#BCEC30] rounded-[46px] hover:bg-[#C6FF00] active:bg-[#000000] active:text-[#FFFFFF] text-lg"
+                >
+                  {(visitedRatio === "0") ? "Начать" : "Продолжить"}
+                </button>) 
+                : (
+                  <button
+                  onClick={handleResetedTrainingSelectModalClick}
+                  className="w-[300px] h-[52px] bg-[#BCEC30] rounded-[46px] hover:bg-[#C6FF00] active:bg-[#000000] active:text-[#FFFFFF] text-lg"
+                >
+                  Начать заново
+                </button>
+                )
+            }
             {isTrainingSelectModalOpen && (
               <TrainingSelectModal 
                 courseId={courseId} 
