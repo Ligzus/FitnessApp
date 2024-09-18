@@ -6,13 +6,12 @@ import { getCourseById, getWorkoutsById } from "../../../utils/api";
 interface ModalProps {
 	closeModal: () => void;
 	courseId: string;
-	onVisitedRatioChange: (ratio: string) => void; // Новый пропс
 }
 
-const TrainingSelectModal: React.FC<ModalProps> = ({ closeModal, courseId, onVisitedRatioChange }) => {
+const TrainingSelectModal: React.FC<ModalProps> = ({ closeModal, courseId }) => {
 	const [courseData, setCourseData] = useState<any[]>([]);
 	const [workoutInfo, setWorkoutInfo] = useState<any[]>([]);
-	const [visitedLinks, setVisitedLinks] = useState<Set<string>>(new Set());
+	const [isLoaded, setIsLoaded] = useState<boolean>(false);
 
 	useEffect(() => {
 		getCourseById(courseId)
@@ -33,6 +32,7 @@ const TrainingSelectModal: React.FC<ModalProps> = ({ closeModal, courseId, onVis
 						}),
 					);
 					setWorkoutInfo(workoutInfoArray);
+					setIsLoaded(true);
 				} catch (error) {
 					console.error("Ошибка при получении информации о курсе:", error);
 				}
@@ -41,48 +41,26 @@ const TrainingSelectModal: React.FC<ModalProps> = ({ closeModal, courseId, onVis
 		fetchWorkoutInfo();
 	}, [courseData]);
 
-	const handleVisited = (trainingId: string, visited: boolean) => {
-		setVisitedLinks((prev) => {
-			const newSet = new Set(prev);
-			if (visited) {
-				newSet.add(trainingId);
-			} else {
-				newSet.delete(trainingId);
-			}
-			return newSet;
-		});
-	};
-
-	const visitedCount = visitedLinks.size;
-	const totalCount = workoutInfo.length;
-	const visitedRatio = totalCount > 0 ? (visitedCount / totalCount) * 100 : 0;
-
-	useEffect(() => {
-		onVisitedRatioChange(visitedRatio.toFixed(0)); // Передаем значение в родительский компонент
-	}, [visitedRatio, onVisitedRatioChange]);
-
 	return (
 		<div className="fixed z-40 inset-0 flex justify-center items-center bg-gray-900 bg-opacity-50" onClick={closeModal}>
-			<div
-				className="relative flex flex-col items-center p-8 gap-8 w-[355px] bg-white shadow-[0_4px_67px_-12px_rgba(0,0,0,0.13)] rounded-[30px] overflow-hidden"
-				onClick={(e) => e.stopPropagation()}
-			>
-				<div className="flex flex-col items-start gap-3 w-full h-full">
-					<h2 className="text-black text-[34px] text-start leading-10 font-medium mb-[20px]">Выберите тренировку</h2>
+			{isLoaded ? (
+				<div
+					className="relative flex flex-col items-center p-8 gap-8 w-[355px] bg-white shadow-[0_4px_67px_-12px_rgba(0,0,0,0.13)] rounded-[30px] overflow-hidden"
+					onClick={(e) => e.stopPropagation()}
+				>
+					<div className="flex flex-col items-start gap-3 w-full h-full">
+						<h2 className="text-black text-[34px] text-start leading-10 font-medium mb-[20px]">Выберите тренировку</h2>
 
-					<div className="flex flex-col gap-3 w-full h-[374px] overflow-y-auto leading-5 pr-[20px]">
-						{workoutInfo.map((workout, index) => (
-							<TrainingLink
-								key={index}
-								trainingId={workout._id}
-								name={workout.name}
-								courseId={courseId}
-								onVisited={handleVisited}
-							/>
-						))}
+						<div className="flex flex-col gap-3 w-full h-[374px] overflow-y-auto leading-5 pr-[20px]">
+							{workoutInfo.map((workout, index) => (
+								<TrainingLink key={index} trainingId={workout._id} name={workout.name} courseId={courseId} />
+							))}
+						</div>
 					</div>
 				</div>
-			</div>
+			) : (
+				<p className="text-black text">Загрузка</p>
+			)}
 		</div>
 	);
 };
