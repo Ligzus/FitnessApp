@@ -20,7 +20,7 @@ function Profile() {
 	const logout = () => {
 		logoutUser();
 		navigate("/");
-	}
+	};
 
 	const openPasswordModal = () => {
 		setIsPasswordModalOpen(true);

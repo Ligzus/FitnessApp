@@ -3,7 +3,14 @@ import TrainingProgressModal from "../Modal/TrainingProgressModal/TrainingProgre
 import SaveTrainingProgressModal from "../Modal/TrainingProgressModal/SaveTrainingProgressModal";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { addRealQuantity, getCourseById, getRealQuantity, getWorkoutsById } from "../../utils/api";
+import {
+	addRealQuantity,
+	addRealQuantityWithoutExercises,
+	getCourseById,
+	getRealQuantity,
+	getRealQuantityWithoutExercises,
+	getWorkoutsById,
+} from "../../utils/api";
 import { useUser } from "../../hooks/useUser";
 
 function TrainingPage() {
@@ -12,9 +19,10 @@ function TrainingPage() {
 	const { id, courseId } = useParams();
 	const [workout, setWorkout] = useState<any>();
 	const [exercises, setExercises] = useState<any[]>([]);
-	const [exerciseProgress, setExerciseProgress] = useState<number[] | null>([]); // Добавлено состояние для прогресса упражнений
+	const [exerciseProgress, setExerciseProgress] = useState<number[]>([]); // Добавлено состояние для прогресса упражнений
 	const [isLoading, setIsLoading] = useState(true);
 	const [courseData, setCourseData] = useState<string | null>();
+	const [withoutExercise, setWithoutExercise] = useState(false);
 	const { user } = useUser();
 
 	const openTrainingProgressModal = () => {
@@ -70,13 +78,31 @@ function TrainingPage() {
 		if (user.uid && courseId && workout) {
 			getRealQuantity(user.uid, courseId, workout._id)
 				.then((data) => {
-					if (data) {
+					if (data.length !== 0) {
 						setExerciseProgress(data);
+						setWithoutExercise(true);
 					}
 				})
 				.catch((error) => console.error(error));
 		}
 	}, [user, courseId, workout]);
+
+	const handleAddRealQuantityWithoutExercises = () => {
+		if (user.uid && courseId) {
+			const exercises = { [0]: { quantity: 0 } };
+			addRealQuantityWithoutExercises(user.uid, courseId, workout._id, exercises)
+				.then(() => {
+					getRealQuantityWithoutExercises(user.uid, courseId, workout._id)
+						.then((data) => {
+							if (data !== null) {
+								setWithoutExercise(true);
+							}
+						})
+						.catch((error) => console.error(error));
+				})
+				.catch((error) => console.error("Ошибка сохранения прогресса:", error));
+		}
+	};
 
 	return (
 		<>
@@ -110,7 +136,7 @@ function TrainingPage() {
 											<ExerciseProgress
 												key={index}
 												exercise={exercise}
-												progress={exerciseProgress ? exerciseProgress[index] : 0}
+												progress={exerciseProgress.length > 0 ? exerciseProgress[index] : 0}
 											/>
 										);
 									})}
@@ -135,7 +161,23 @@ function TrainingPage() {
 								)}
 							</>
 						) : (
-							<h3 className="text-[32px] text-center md:text-start leading-9">Нет упражнений</h3>
+							<>
+								{withoutExercise ? (
+									<button
+										className="flex sm:w-[320px] text-black text-lg font-normal flex-row justify-center items-center p-4 gap-2 h-[52px] bg-[#F7F7F7] rounded-[46px]"
+										disabled
+									>
+										Тренировка завершена
+									</button>
+								) : (
+									<button
+										onClick={handleAddRealQuantityWithoutExercises}
+										className="flex sm:w-[320px] text-black text-lg font-normal flex-row justify-center items-center p-4 gap-2 h-[52px] bg-[#BCEC30] hover:bg-[#C6FF00] active:bg-[#000000] active:text-[#FFFFFF] rounded-[46px]"
+									>
+										Завершить тренировку
+									</button>
+								)}
+							</>
 						)}
 					</div>
 				</div>
