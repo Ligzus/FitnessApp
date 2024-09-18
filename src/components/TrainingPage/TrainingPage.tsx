@@ -89,7 +89,7 @@ function TrainingPage() {
 
 	const handleAddRealQuantityWithoutExercises = () => {
 		if (user.uid && courseId) {
-			const exercises = { [0]: {quantity: 0} };
+			const exercises = { [0]: { quantity: 0 } };
 			addRealQuantityWithoutExercises(user.uid, courseId, workout._id, exercises)
 				.then(() => {
 					getRealQuantityWithoutExercises(user.uid, courseId, workout._id)

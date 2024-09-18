@@ -202,48 +202,6 @@ export async function getRealQuantity(uuid: string, courseId: string, workout_Id
 	}
 }
 
-export async function addWorkoutProgress(uuid: string, courseId: string, workout_Id: string, workouts: number) {
-	try {
-		const response = await fetch(baseHost + `users/${uuid}/courses/${courseId}/workouts/${workout_Id}/exercises.json`, {
-			method: "PATCH",
-			headers: {
-				"Content-Type": "application/json",
-			},
-			body: JSON.stringify({ workouts }), // Отправляем массив объектов
-		});
-		if (!response.ok) {
-			throw new Error(`Ошибка! Статус: ${response.status}`);
-		}
-	} catch (error) {
-		console.warn(error);
-		throw error;
-	}
-}
-
-export async function getWorkoutProgress(uuid: string, courseId: string, workout_Id: string) {
-	try {
-		const response = await fetch(baseHost + `users/${uuid}/courses/${courseId}/workouts/${workout_Id}/exercises.json`, {
-			method: "GET",
-			headers: {
-				"Content-Type": "application/json",
-			},
-		});
-		if (!response.ok) {
-			throw new Error(`Ошибка! Статус: ${response.status}`);
-		}
-		const data = await response.json();
-
-		if (data !== null) {
-			return data;
-		} else {
-			return 0;
-		}
-	} catch (error) {
-		console.warn(error);
-		throw error;
-	}
-}
-
 export async function deleteProgress(uuid: string, courseId: string) {
 	try {
 		const response = await fetch(baseHost + `users/${uuid}/courses/${courseId}/workouts.json`, {
@@ -307,7 +265,7 @@ export async function addRealQuantityWithoutExercises(
 	uuid: string,
 	courseId: string,
 	workout_Id: string,
-	exercises:  { [key: string]: {quantity: number} },
+	exercises: { [key: string]: { quantity: number } },
 ) {
 	try {
 		const response = await fetch(baseHost + `users/${uuid}/courses/${courseId}/workouts/${workout_Id}.json`, {

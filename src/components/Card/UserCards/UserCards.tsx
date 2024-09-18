@@ -10,7 +10,7 @@ import {
 } from "../../../utils/api";
 import { useUser } from "../../../hooks/useUser";
 
-type UserCardsProps = CardType & { onDelete: (courseId: string) => void};
+type UserCardsProps = CardType & { onDelete: (courseId: string) => void };
 
 function UserCards({ courseId, image, nameRu, onDelete }: UserCardsProps) {
 	const [isTrainingSelectModalOpen, setTrainingSelectModalOpen] = useState(false);
@@ -77,10 +77,9 @@ function UserCards({ courseId, image, nameRu, onDelete }: UserCardsProps) {
 	}
 
 	function restartCourse() {
-		deleteProgress(user.uid, courseId)
-		.then(() => {
+		deleteProgress(user.uid, courseId).then(() => {
 			setCompleteArray([]);
-		})
+		});
 	}
 
 	const visitedRatio = workoutInfo.length > 0 ? (completeArray.length / workoutInfo.length) * 100 : 0;
