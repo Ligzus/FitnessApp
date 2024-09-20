@@ -45,12 +45,15 @@ const Register: React.FC<ModalProps> = ({ closeModal, toggleModal }) => {
 	return (
 		<div className="fixed inset-0 flex justify-center items-center bg-gray-900 bg-opacity-50" onClick={closeModal}>
 			<div
-				className="relative flex flex-col items-center p-10 gap-12 w-[360px] h-[auto] bg-white shadow-[0_4px_67px_-12px_rgba(0,0,0,0.13)] rounded-[30px]"
+				className="relative flex flex-col items-center p-10 gap-3 w-[360px] h-[auto] bg-white shadow-[0_4px_67px_-12px_rgba(0,0,0,0.13)] rounded-[30px]"
 				onClick={(e) => e.stopPropagation()}
-			>
-				<img src="/logo.svg" alt="logo" />
+			>	
+				<div className="flex flex-col">
+					<img className="w-[100px]" src="/logo.svg" alt="logo" />				
+					<p className="content-center text-start font-medium text-lg text-normal">Capybara Fit</p>
+				</div>		
 
-				<div className="flex flex-col items-center gap-8 w-[280px] h-[auto]">
+				<div className="flex flex-col items-center gap-5 w-[280px] h-[auto]">
 					<div className="flex flex-col items-center gap-[10px] w-[280px]">
 						<div className="flex flex-row items-center gap-2 w-[280px] h-[52px] border border-gray-300 rounded-[8px]">
 							<input

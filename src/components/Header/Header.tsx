@@ -109,7 +109,7 @@ const Header: React.FC<HeaderProps> = ({ openModal }) => {
 				) : (
 					<button
 						onClick={openModal}
-						className="bg-[#BCEC30] px-[16px] py-[8px] sm:px-[26px] rounded-[46px] hover:bg-[#C6FF00] active:bg-[#000000] active:text-[#FFFFFF] text-[18px] sm:text-lg sm:h-[52px]"
+						className="mt-[15px] sm:mt-0 bg-[#BCEC30] px-[16px] py-[8px] sm:px-[26px] rounded-[46px] hover:bg-[#C6FF00] active:bg-[#000000] active:text-[#FFFFFF] text-[18px] sm:text-lg sm:h-[52px]"
 					>
 						Войти
 					</button>
