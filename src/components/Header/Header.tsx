@@ -42,9 +42,15 @@ const Header: React.FC<HeaderProps> = ({ openModal }) => {
 	}, []);
 
 	return (
+		<>
 		<div className="header flex flex-row justify-between relative">
 			<Link to={"/"} className="headerLogo">
-				<img className="w-56 h-9 mb-[15px]" src="/logo.svg" alt="logo" />
+				<div className="flex flex-col-reverse sm:flex-row sm:gap-[10px]">
+					<p className="text-[22px] sm:text-[42px] font-semibold">Capybara Fit</p>
+					<div className="flex justify-center">
+						<img className="w-[70px] sm:mb-[15px]" src="/logo.svg" alt="logo" />
+					</div>					
+				</div>
 				<p className="hidden sm:block text-lg opacity-50">Онлайн-тренировки для занятий дома</p>
 			</Link>
 			<div className="headerButton">
@@ -85,7 +91,7 @@ const Header: React.FC<HeaderProps> = ({ openModal }) => {
 					</div>
 				</div>
 				{user ? (
-					<div onClick={toggleModal} className="flex gap-[12px] items-center cursor-pointer">
+					<div onClick={toggleModal} className="flex gap-[12px] items-center cursor-pointer mt-[15px] sm:mt-0">
 						<img src="/profile-photo-mini.svg" alt="profile-photo-mini" />
 						<p className="hidden sm:block text-[24px]">{name || user?.email || "Default Name"}</p>
 
@@ -108,8 +114,12 @@ const Header: React.FC<HeaderProps> = ({ openModal }) => {
 						Войти
 					</button>
 				)}
-			</div>
+			</div>			
 		</div>
+		<div>
+			<div className="w-[100%]  h-[1px] bg-[#BCEC30]" />
+		</div>
+		</>
 	);
 };
 
