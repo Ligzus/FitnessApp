@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`CoursePage snapshot 1`] = `
-<DocumentFragment>
+<div>
   <div
     class="mt-[40px] sm:mt-[60px]"
   >
@@ -9,5 +9,5 @@ exports[`CoursePage snapshot 1`] = `
       Загрузка курса...
     </p>
   </div>
-</DocumentFragment>
+</div>
 `;

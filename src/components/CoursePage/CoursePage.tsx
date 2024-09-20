@@ -1,7 +1,8 @@
 import { useParams } from "react-router-dom";
-import { addCourseToUser, getCourse } from "../../utils/api";
+import { addCourseToUser, getCourse, getUserCourses } from "../../utils/api";
 import { useEffect, useState } from "react";
 import { useUser } from "../../hooks/useUser";
+import { TrainingType } from "../../types/training";
 
 interface CoursePageProps {
 	openModal: () => void;
@@ -9,9 +10,13 @@ interface CoursePageProps {
 
 function CoursePage({ openModal }: CoursePageProps) {
 	const { id } = useParams(); // Получаем ID из URL
-	const [course, setCourse] = useState<any>(null);
+	const [course, setCourse] = useState<TrainingType>();
 	const [isLoading, setIsLoading] = useState(true);
 	const [bgColor, setBgColor] = useState("");
+	const [specialClass, setSpecialClass] = useState("");
+	const [isCourseAdded, setIsCourseAdded] = useState(false);
+	const [isButtonDisabled, setIsButtonDisabled] = useState(false);
+
 	const { user } = useUser();
 
 	async function getCourseById(id: string) {
@@ -25,15 +30,40 @@ function CoursePage({ openModal }: CoursePageProps) {
 				.then((data) => {
 					setCourse(data);
 				})
-				.catch((error) => console.error(error))
+				.catch((error: unknown) => console.error(error))
 				.finally(() => setIsLoading(false));
 		}
 	}, [id]);
 
+	useEffect(() => {
+		if (user) {
+			getUserCourses(user?.uid).then((data) => {
+				if (data && typeof data === "object") {
+					const coursesArray = Object.values(data) as TrainingType[];
+					const courseExists = coursesArray.some((course) => course.id === id);
+
+					if (courseExists) {
+						setIsCourseAdded(true);
+						setIsButtonDisabled(true);
+					}
+				}
+			});
+		}
+	}, [user]);
+
 	function addCourse() {
-		addCourseToUser(user.uid, course._id).catch((error) => {
-			console.error("Ошибка при добавлении курса:", error);
-		});
+		if (user?.uid && course?._id) {
+			addCourseToUser(user.uid, course._id)
+				.then(() => {
+					setIsCourseAdded(true);
+					setIsButtonDisabled(true);
+				})
+				.catch((error) => {
+					console.error("Ошибка при добавлении курса:", error);
+				});
+		} else {
+			console.error("User or course is not available");
+		}
 	}
 
 	useEffect(() => {
@@ -55,9 +85,17 @@ function CoursePage({ openModal }: CoursePageProps) {
 				bg_color = "#F7A012";
 				break;
 			default:
-				bg_color = "#FFC700"; // Цвет по умолчанию
+				bg_color = "#FFC700";
 		}
 		setBgColor(bg_color);
+	}, [id]);
+
+	useEffect(() => {
+		if (id) {
+			const specialIds = ["fi67sm", "q02a6i"];
+			const className = specialIds.includes(id) ? "mb-10" : "md:mr-[70px]";
+			setSpecialClass((prev) => prev + (prev ? " " : "") + className);
+		}
 	}, [id]);
 
 	return (
@@ -74,11 +112,7 @@ function CoursePage({ openModal }: CoursePageProps) {
 								style={{ backgroundColor: bgColor }}
 							>
 								<div className="overflow-hidden rounded-[20px]">
-									<img
-										src={course.images.cardImage}
-										alt="card-img"
-										className={id === "fi67sm" ? "mb-10" : id === "q02a6i" ? "mb-10" : "md:mr-[70px]"}
-									/>
+									<img src={course.images.cardImage} alt="card-img" className={specialClass} />
 								</div>
 							</div>
 
@@ -91,13 +125,7 @@ function CoursePage({ openModal }: CoursePageProps) {
 									{course.nameRU}
 								</p>
 								<div className="overflow-hidden relative rounded-[20px]">
-									<img
-										src={course.images.courseImage}
-										alt="card-img"
-										className={
-											id === "ab1c3f" ? "h-[120%] sm:mt-[-80px]" : id === "q02a6i" || "fi67sm" ? "" : "md:mr-[70px]"
-										}
-									/>
+									<img src={course.images.courseImage} alt="card-img" className={specialClass} />
 								</div>
 							</div>
 						</div>
@@ -108,7 +136,7 @@ function CoursePage({ openModal }: CoursePageProps) {
 							</h2>
 
 							<div className="flex flex-col xl:flex-row mt-[20px] sm:mt-[40px] gap-[17px] justify-between">
-								{course.fitting.map((fitting: any, index: number) => (
+								{course.fitting.map((fitting: string, index: number) => (
 									<div
 										key={index}
 										className="w-full xl:w-[368px] h-[141px] md:h-[110px] xl:h-[160px] pl-[15px] pr-[15px] flex bg-gradient-to-r from-[#151720] to-[#1E212E] items-center rounded-[20px]"
@@ -126,7 +154,7 @@ function CoursePage({ openModal }: CoursePageProps) {
 							</h2>
 
 							<div className="bg-[#BCEC30] lg:grid lg:grid-cols-3 grid-rows-2 gap-4 p-[20px] md:p-[50px] w-full h-auto lg:h-[146px] lg:p-[30px] rounded-[20px] items-center">
-								{course.directions.map((directions: any, index: number) => (
+								{course.directions.map((directions: string, index: number) => (
 									<p key={index} className="text-[18px] sm:text-[24px] md:text-[28px] text-left">
 										✦ {directions}
 									</p>
@@ -166,9 +194,11 @@ function CoursePage({ openModal }: CoursePageProps) {
 										{user ? (
 											<button
 												onClick={addCourse}
-												className="w-full h-[50px] bg-[#BCEC30] rounded-[40px] hover:bg-[#C6FF00] active:bg-[#000000] active:text-[#FFFFFF] md:text-lg mt-[20px] sm:mt-[28px]"
+												disabled={isButtonDisabled}
+												className={`w-full h-[50px] rounded-[40px] md:text-lg mt-[20px] sm:mt-[28px] 
+													${isButtonDisabled ? "bg-[#efffc0]" : "bg-[#BCEC30] hover:bg-[#C6FF00] active:bg-[#000000] active:text-[#FFFFFF]"}`}
 											>
-												Добавить курс
+												{isCourseAdded ? "Курс добавлен" : "Добавить курс"}
 											</button>
 										) : (
 											<button

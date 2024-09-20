@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { getCourse } from "../../utils/api";
 import Card from "../../components/Card/Card";
+import { TrainingType } from "../../types/training";
 
 function Main() {
 	function scrollToCourses() {
@@ -11,18 +12,15 @@ function Main() {
 	}
 
 	const [isLoaded, setIsLoaded] = useState(false);
-	const [courses, setCourses] = useState<any[]>([]);
+	const [courses, setCourses] = useState<TrainingType[]>([]);
 
 	useEffect(() => {
 		getCourse()
-			.then((data: any) => {
-				let coursesData: any[] = [];
-				for (let i = 0; i < Object.keys(data).length; i++) {
-					coursesData.push(data[Object.keys(data)[i]]);
-				}
+			.then((data: Record<string, TrainingType>) => {
+				const coursesData: TrainingType[] = Object.keys(data).map((key) => data[key]);
 				setCourses(coursesData);
 			})
-			.catch((error: any) => {
+			.catch((error: unknown) => {
 				console.warn(error);
 			})
 			.finally(() => {
@@ -43,7 +41,7 @@ function Main() {
 			</div>
 			{isLoaded ? (
 				<div className="flex justify-center xl:justify-start flex-wrap gap-6 sm:gap-10">
-					{courses.map((course: any) => (
+					{courses.map((course) => (
 						<Card key={course._id} courseId={course._id} image={course.images.cardImage} nameRu={course.nameRU} />
 					))}
 				</div>

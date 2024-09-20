@@ -1,27 +1,26 @@
 import React, { useState, useEffect } from "react";
 import "./TrainingProgressModal.css";
 import TrainingProgressItem from "../TrainingProgressItem/TrainingProgressItem";
+import { Exercise } from "../../../../types/training";
 
 interface ModalProps {
 	closeModal: () => void;
 	onSubmit: (updatedQuantities: { [key: string]: number }) => void;
-	exercises: any[];
+	exercises: Exercise[];
 	workout_Id: string;
-	exerciseProgress: any;
+	exerciseProgress: { [key: string]: number };
 }
 
 const TrainingProgressModal: React.FC<ModalProps> = ({ closeModal, onSubmit, exercises, exerciseProgress }) => {
-	// Инициализируем состояния со значениями по умолчанию
 	const [updatedQuantities, setUpdatedQuantities] = useState<{ [exerciseName: string]: number }>({});
 
 	useEffect(() => {
-		// Устанавливаем начальные значения для всех упражнений при загрузке модального окна
 		const initialQuantities: { [key: string]: number } = {};
-		exercises.forEach((exercise, index) => {
-			initialQuantities[exercise.name] = exerciseProgress[index] || 0;
+		exercises.forEach((exercise) => {
+			initialQuantities[exercise.name] = exerciseProgress[exercise.name] || 0;
 		});
 		setUpdatedQuantities(initialQuantities);
-	}, [exercises]);
+	}, [exercises, exerciseProgress]);
 
 	const handleQuantityChange = (exerciseName: string, realQuantity: number) => {
 		setUpdatedQuantities((prev) => ({
@@ -31,7 +30,7 @@ const TrainingProgressModal: React.FC<ModalProps> = ({ closeModal, onSubmit, exe
 	};
 
 	const handleSubmit = () => {
-		onSubmit(updatedQuantities); // Передаем все значения
+		onSubmit(updatedQuantities);
 	};
 
 	return (
@@ -45,7 +44,14 @@ const TrainingProgressModal: React.FC<ModalProps> = ({ closeModal, onSubmit, exe
 
 					<div className="flex flex-col gap-5 w-full h-[350px] overflow-y-auto leading-5 pr-[24px]">
 						{exercises.map((exercise, index) => (
-							<TrainingProgressItem key={index} exercise={exercise} onQuantityChange={handleQuantityChange} />
+							<TrainingProgressItem
+								key={index}
+								_id={exercise._id}
+								name={exercise.name}
+								quantity={exercise.quantity}
+								onQuantityChange={handleQuantityChange}
+								video={exercise.video}
+							/>
 						))}
 					</div>
 				</div>

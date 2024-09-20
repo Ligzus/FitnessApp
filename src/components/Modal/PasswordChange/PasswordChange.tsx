@@ -8,9 +8,9 @@ interface ModalProps {
 }
 
 const PasswordChange: React.FC<ModalProps> = ({ closeModal, onSubmit }) => {
-	const [newPassword, setNewPassword] = useState<string>("");
-	const [oldPassword, setOldPassword] = useState<string>("");
-	const [message, setMessage] = useState<string>("");
+	const [newPassword, setNewPassword] = useState("");
+	const [oldPassword, setOldPassword] = useState("");
+	const [message, setMessage] = useState("");
 
 	const handleChangePassword = async (): Promise<void> => {
 		const user = auth.currentUser;
@@ -25,8 +25,10 @@ const PasswordChange: React.FC<ModalProps> = ({ closeModal, onSubmit }) => {
 				await updatePassword(user, newPassword).then(() => {
 					onSubmit();
 				});
-			} catch (error: any) {
-				setMessage("Ошибка при изменении пароля: " + error.message);
+			} catch (error: unknown) {
+				if (error instanceof Error) {
+					setMessage("Ошибка при изменении пароля: " + error.message);
+				}
 			}
 		} else {
 			setMessage("Пользователь не авторизован.");

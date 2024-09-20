@@ -4,7 +4,7 @@ import ExerciseProgress from "./ExerciseProgress";
 
 describe("ExerciseProgress", () => {
 	test("Должен корректно отображаться с прогрессом", () => {
-		const exercise = { name: "Push Ups", quantity: 20 };
+		const exercise = { _id: "1", name: "Push Ups", quantity: 20, video: "pushups.mp4" };
 		const progress = 10;
 
 		render(<ExerciseProgress exercise={exercise} progress={progress} />);
@@ -15,7 +15,7 @@ describe("ExerciseProgress", () => {
 	});
 
 	test("Должен корректно отображаться без прогресса", () => {
-		const exercise = { name: "Push Ups", quantity: 20 };
+		const exercise = { _id: "1", name: "Push Ups", quantity: 20, video: "pushups.mp4" };
 		const progress = 0;
 
 		render(<ExerciseProgress exercise={exercise} progress={progress} />);
@@ -26,7 +26,7 @@ describe("ExerciseProgress", () => {
 	});
 
 	test("Должен корректно отображаться, когда прогресс больше требуемого", () => {
-		const exercise = { name: "Push Ups", quantity: 20 };
+		const exercise = { _id: "1", name: "Push Ups", quantity: 20, video: "pushups.mp4" };
 		const progress = 30;
 
 		render(<ExerciseProgress exercise={exercise} progress={progress} />);

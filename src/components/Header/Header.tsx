@@ -13,7 +13,7 @@ const Header: React.FC<HeaderProps> = ({ openModal }) => {
 	const [modalVisible, setModalVisible] = useState(false);
 	const modalRef = useRef<HTMLDivElement>(null);
 	const { user, logoutUser } = useUser();
-	const [name, setName] = useState<string | undefined>(user?.displayName);
+	const [name, setName] = useState(user?.displayName || "");
 	const navigate = useNavigate();
 
 	const toggleModal = () => {
@@ -27,10 +27,12 @@ const Header: React.FC<HeaderProps> = ({ openModal }) => {
 	};
 
 	useEffect(() => {
-		getUserName(user?.uid).then((data) => {
-			setName(data?.name);
-		});
-	});
+		if (user?.uid) {
+			getUserName(user.uid).then((data) => {
+				setName(data?.name || "");
+			});
+		}
+	}, [user]);
 
 	useEffect(() => {
 		document.addEventListener("mousedown", handleClickOutside);
@@ -55,7 +57,7 @@ const Header: React.FC<HeaderProps> = ({ openModal }) => {
 					}
 				>
 					<div className="mb-[30px] flex gap-[10px] flex-col">
-						<p className="text-[18px] font-normal text-center">{name || user?.email}</p>
+						<p data-testid="user-email" className="hidden sm:block text-[24px]">{name || user?.email || "Default Name"}</p>
 						<p className="text-[16px] font-normal text-center text-[#999999]">{user?.email}</p>
 					</div>
 
@@ -85,7 +87,7 @@ const Header: React.FC<HeaderProps> = ({ openModal }) => {
 				{user ? (
 					<div onClick={toggleModal} className="flex gap-[12px] items-center cursor-pointer">
 						<img src="/profile-photo-mini.svg" alt="profile-photo-mini" />
-						<p className="hidden sm:block text-[24px]">{name || user?.email}</p>
+						<p className="hidden sm:block text-[24px]">{name || user?.email || "Default Name"}</p>
 
 						<svg
 							className="hidden sm:block"

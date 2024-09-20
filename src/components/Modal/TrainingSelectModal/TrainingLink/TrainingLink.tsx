@@ -14,14 +14,17 @@ function TrainingLink({ name, trainingId, courseId }: TrainingLinkProps) {
 	const { user } = useUser();
 
 	useEffect(() => {
-		getRealQuantityWithoutExercises(user.uid, courseId, trainingId)
-			.then((data) => {
-				if (data !== null) {
-					setCompletedTraining(true);
-				}
-			})
-			.catch((error) => console.error(error));
-	});
+		if (user?.uid) {
+			// Проверка на null
+			getRealQuantityWithoutExercises(user.uid, courseId, trainingId)
+				.then((data) => {
+					if (data !== null) {
+						setCompletedTraining(true);
+					}
+				})
+				.catch((error: unknown) => console.error(error));
+		}
+	}, [user, courseId, trainingId]); // Добавлены зависимости
 
 	return (
 		<div className="flex gap-[10px] w-full text-start items-center border-b-2">

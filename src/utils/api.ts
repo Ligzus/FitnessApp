@@ -1,3 +1,5 @@
+import { Exercise } from "../types/training";
+
 const baseHost = "https://fitness-pro-67b02-default-rtdb.europe-west1.firebasedatabase.app/";
 export async function getCourse() {
 	try {
@@ -74,7 +76,7 @@ export async function deleteCourseToUser(uuid: string, courseId: string) {
 				console.error("Ошибка при удалении курса");
 			}
 		})
-		.catch((error) => {
+		.catch((error: unknown) => {
 			console.error("Ошибка:", error);
 		});
 }
@@ -174,7 +176,7 @@ export async function addRealQuantity(
 	}
 }
 
-export async function getRealQuantity(uuid: string, courseId: string, workout_Id: string) {
+export async function getRealQuantity(uuid: string, courseId: string, workout_Id: string): Promise<number[]> {
 	try {
 		const response = await fetch(baseHost + `users/${uuid}/courses/${courseId}/workouts/${workout_Id}/exercises.json`, {
 			method: "GET",
@@ -188,10 +190,10 @@ export async function getRealQuantity(uuid: string, courseId: string, workout_Id
 		}
 
 		// Парсим ответ и возвращаем данные
-		const data = await response.json();
+		const data: Exercise[] = await response.json();
 
 		if (data !== null) {
-			const realQuantity = data.map((exercise: any) => exercise.quantity);
+			const realQuantity = data.map((exercise: Exercise) => exercise.quantity);
 			return realQuantity;
 		} else {
 			return [];

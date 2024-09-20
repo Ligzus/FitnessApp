@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import "./TrainingSelectModal.css";
 import TrainingLink from "./TrainingLink/TrainingLink";
 import { getCourseById, getWorkoutsById } from "../../../utils/api";
+import { Exercise } from "../../../types/training";
 
 interface ModalProps {
 	closeModal: () => void;
@@ -9,16 +10,16 @@ interface ModalProps {
 }
 
 const TrainingSelectModal: React.FC<ModalProps> = ({ closeModal, courseId }) => {
-	const [courseData, setCourseData] = useState<any[]>([]);
-	const [workoutInfo, setWorkoutInfo] = useState<any[]>([]);
-	const [isLoaded, setIsLoaded] = useState<boolean>(false);
+	const [courseData, setCourseData] = useState([]);
+	const [workoutInfo, setWorkoutInfo] = useState<Exercise[]>([]);
+	const [isLoaded, setIsLoaded] = useState(false);
 
 	useEffect(() => {
 		getCourseById(courseId)
 			.then((data) => {
 				setCourseData(data.workouts);
 			})
-			.catch((error) => console.error(error));
+			.catch((error: unknown) => console.error(error));
 	}, [courseId]);
 
 	useEffect(() => {
@@ -33,7 +34,7 @@ const TrainingSelectModal: React.FC<ModalProps> = ({ closeModal, courseId }) => 
 					);
 					setWorkoutInfo(workoutInfoArray);
 					setIsLoaded(true);
-				} catch (error) {
+				} catch (error: unknown) {
 					console.error("Ошибка при получении информации о курсе:", error);
 				}
 			}

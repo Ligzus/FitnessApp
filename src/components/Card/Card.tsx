@@ -4,28 +4,34 @@ import { CardType } from "../../types/cards";
 import { useUser } from "../../hooks/useUser";
 import { addCourseToUser } from "../../utils/api";
 import AddCourseModal from "../Modal/AddCourseModal/AddCourseModal";
+import LoginRequired from "../Modal/LoginRequired/LoginRequired";
 
 function Card({ courseId, image, nameRu }: CardType) {
 	const { user } = useUser();
-	const [isModalOpen, setIsModalOpen] = useState(false); // Состояние для модального окна
+	const [isModalOpen, setIsModalOpen] = useState(false);
+	const [loginRequired, setLoginRequired] = useState(false);
 
 	function addCourse(event: React.MouseEvent<HTMLButtonElement>) {
 		event.stopPropagation();
 		event.preventDefault();
 
-		addCourseToUser(user.uid, courseId)
-			.then(() => {
-				// Показываем модальное окно при успешном добавлении курса
-				setIsModalOpen(true);
-			})
-			.catch((error) => {
-				console.error("Ошибка при добавлении курса:", error);
-			});
+		if (user) {
+			addCourseToUser(user.uid, courseId)
+				.then(() => {
+					// Показываем модальное окно при успешном добавлении курса
+					setIsModalOpen(true);
+				})
+				.catch((error: unknown) => {
+					console.error("Ошибка при добавлении курса:", error);
+				});
+		} else {
+			setLoginRequired(true);
+		}
 	}
 
-	// Функция для закрытия модального окна
 	function closeModal() {
 		setIsModalOpen(false);
+		setLoginRequired(false);
 	}
 
 	return (
@@ -76,6 +82,7 @@ function Card({ courseId, image, nameRu }: CardType) {
 
 			{/* Условный рендеринг модального окна */}
 			{isModalOpen && <AddCourseModal closeModal={closeModal} />}
+			{loginRequired && <LoginRequired closeModal={closeModal} />}
 		</>
 	);
 }

@@ -12,16 +12,17 @@ import {
 	getWorkoutsById,
 } from "../../utils/api";
 import { useUser } from "../../hooks/useUser";
+import { Exercise } from "../../types/training";
 
 function TrainingPage() {
 	const [isTrainingProgressModalOpen, setIsTrainingProgressModalOpen] = useState(false);
 	const [isSaveTrainingProgressModalOpen, setIsSaveTrainingProgressModalOpen] = useState(false);
 	const { id, courseId } = useParams();
-	const [workout, setWorkout] = useState<any>();
-	const [exercises, setExercises] = useState<any[]>([]);
-	const [exerciseProgress, setExerciseProgress] = useState<number[]>([]); // Добавлено состояние для прогресса упражнений
+	const [workout, setWorkout] = useState<Exercise | null>(null);
+	const [exercises, setExercises] = useState<Exercise[]>([]);
+	const [exerciseProgress, setExerciseProgress] = useState<{ [key: string]: number }>({});
 	const [isLoading, setIsLoading] = useState(true);
-	const [courseData, setCourseData] = useState<string | null>();
+	const [courseData, setCourseData] = useState<string | null>(null);
 	const [withoutExercise, setWithoutExercise] = useState(false);
 	const { user } = useUser();
 
@@ -29,10 +30,11 @@ function TrainingPage() {
 		setIsTrainingProgressModalOpen(true);
 		setIsSaveTrainingProgressModalOpen(false);
 	};
+
 	const closeTrainingProgressModal = () => setIsTrainingProgressModalOpen(false);
 
 	const handleSaveTrainingProgress = (updatedQuantities: { [exerciseName: string]: number }) => {
-		if (user.uid && courseId) {
+		if (user?.uid && courseId && workout) {
 			const exercisesData = Object.entries(updatedQuantities).map(([name, quantity]) => ({
 				name,
 				quantity,
@@ -41,10 +43,18 @@ function TrainingPage() {
 			addRealQuantity(user.uid, courseId, workout._id, exercisesData)
 				.then(() => {
 					getRealQuantity(user.uid, courseId, workout._id).then((data) => {
-						setExerciseProgress(data); // Сохраняем данные о прогрессе упражнений
+						const progressObject = data.reduce(
+							(acc, curr, index) => {
+								acc[exercises[index].name] = curr;
+								return acc;
+							},
+							{} as { [key: string]: number },
+						);
+
+						setExerciseProgress(progressObject);
 					});
 				})
-				.catch((error) => console.error("Ошибка сохранения прогресса:", error));
+				.catch((error: unknown) => console.error("Ошибка сохранения прогресса:", error));
 		} else {
 			console.error("ID тренировки или курса не найдены");
 		}
@@ -58,7 +68,7 @@ function TrainingPage() {
 				.then((data) => {
 					setCourseData(data.nameRU);
 				})
-				.catch((error) => console.error(error));
+				.catch((error: unknown) => console.error(error));
 		}
 	}, [courseId]);
 
@@ -69,26 +79,34 @@ function TrainingPage() {
 					setWorkout(data);
 					setExercises(data.exercises);
 				})
-				.catch((error) => console.error(error))
+				.catch((error: unknown) => console.error(error))
 				.finally(() => setIsLoading(false));
 		}
 	}, [id]);
 
 	useEffect(() => {
-		if (user.uid && courseId && workout) {
+		if (user?.uid && courseId && workout) {
 			getRealQuantity(user.uid, courseId, workout._id)
 				.then((data) => {
 					if (data.length !== 0) {
-						setExerciseProgress(data);
+						const progressObject = data.reduce(
+							(acc, curr, index) => {
+								acc[exercises[index].name] = curr;
+								return acc;
+							},
+							{} as { [key: string]: number },
+						);
+
+						setExerciseProgress(progressObject);
 						setWithoutExercise(true);
 					}
 				})
-				.catch((error) => console.error(error));
+				.catch((error: unknown) => console.error(error));
 		}
 	}, [user, courseId, workout]);
 
 	const handleAddRealQuantityWithoutExercises = () => {
-		if (user.uid && courseId) {
+		if (user?.uid && courseId && workout) {
 			const exercises = { [0]: { quantity: 0 } };
 			addRealQuantityWithoutExercises(user.uid, courseId, workout._id, exercises)
 				.then(() => {
@@ -98,9 +116,9 @@ function TrainingPage() {
 								setWithoutExercise(true);
 							}
 						})
-						.catch((error) => console.error(error));
+						.catch((error: unknown) => console.error(error));
 				})
-				.catch((error) => console.error("Ошибка сохранения прогресса:", error));
+				.catch((error: unknown) => console.error("Ошибка сохранения прогресса:", error));
 		}
 	};
 
@@ -115,31 +133,25 @@ function TrainingPage() {
 							{courseData}
 						</h2>
 						<p className="text-[18px] sm:text-[22px] lg:text-[32px] text-left leading-none underline decoration-solid">
-							{workout.name}
+							{workout?.name}
 						</p>
 					</div>
 
 					<div className="flex justify-center bg-[#FFFFFF] rounded-[28px]">
 						<iframe
 							className="w-[343px] h-[189px] sm:w-full sm:h-[400px] md:h-[639px] rounded-[30px]"
-							src={workout.video}
+							src={workout?.video}
 						></iframe>
 					</div>
 
 					<div className="flex flex-col gap-[20px] sm:gap-[40px] bg-[#FFFFFF] rounded-[28px] p-[30px] sm:p-[40px]">
-						{exercises ? (
+						{exercises && workout ? (
 							<>
 								<h3 className="text-[32px] text-center md:text-start leading-9">Упражнения тренировки</h3>
-								<div className="flex flex-row justify-center md:justify-start flex-wrap gap-x-[60px] gap-y-[20px]">
-									{exercises.map((exercise, index) => {
-										return (
-											<ExerciseProgress
-												key={index}
-												exercise={exercise}
-												progress={exerciseProgress.length > 0 ? exerciseProgress[index] : 0}
-											/>
-										);
-									})}
+								<div className="flex flex-row justify-center md:justify-start flex-wrap gap-x-[60px] gap-y-[30px]">
+									{exercises.map((exercise, index) => (
+										<ExerciseProgress key={index} exercise={exercise} progress={exerciseProgress[exercise.name] || 0} />
+									))}
 								</div>
 								<button
 									onClick={openTrainingProgressModal}

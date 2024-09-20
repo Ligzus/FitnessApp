@@ -29,13 +29,15 @@ const Register: React.FC<ModalProps> = ({ closeModal, toggleModal }) => {
 				addUser(userCredential.user.uid);
 				closeModal();
 			})
-			.catch((error) => {
-				if (error.message === "Firebase: Error (auth/invalid-email).") {
-					setError("email введен некорректно");
-				} else if (error.message === "Firebase: Password should be at least 6 characters (auth/weak-password).") {
-					setError("Пароль должен быть не менее 6 символов");
-				} else {
-					setError("Ошибка регистрации, попробуйте позже");
+			.catch((error: unknown) => {
+				if (error instanceof Error) {
+					if (error.message === "Firebase: Error (auth/invalid-email).") {
+						setError("email введен некорректно");
+					} else if (error.message === "Firebase: Password should be at least 6 characters (auth/weak-password).") {
+						setError("Пароль должен быть не менее 6 символов");
+					} else {
+						setError("Ошибка регистрации, попробуйте позже");
+					}
 				}
 			});
 	}

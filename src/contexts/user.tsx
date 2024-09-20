@@ -1,5 +1,6 @@
-import { createContext, useState, useEffect } from "react";
+import { createContext, useState, useEffect, ReactNode } from "react";
 import { auth } from "../../src/utils/firebase";
+import { User } from "firebase/auth";
 
 function getUserFromLocalStorage() {
 	try {
@@ -9,17 +10,17 @@ function getUserFromLocalStorage() {
 	}
 }
 
-export interface User {
-	user: any;
+export interface UserProp {
+	user: User | null;
 	name: string | undefined;
-	loginUser(newUser: any): void;
+	loginUser(newUser: User): void;
 	logoutUser(): void;
 	updateUserName(newName: string): void;
 }
 
-export const UserContext = createContext<User>({} as User);
+export const UserContext = createContext<UserProp>({} as UserProp);
 
-export const UserProvider = ({ children }: any) => {
+export const UserProvider = ({ children }: { children: ReactNode }) => {
 	const [user, setUser] = useState(getUserFromLocalStorage());
 	const [name, setName] = useState<string | undefined>(user?.displayName);
 
@@ -39,10 +40,10 @@ export const UserProvider = ({ children }: any) => {
 		return () => unsubscribe();
 	}, []);
 
-	function loginUser(newUser: any) {
+	function loginUser(newUser: User) {
 		setUser(newUser);
 		localStorage.setItem("user", JSON.stringify(newUser));
-		setName(newUser.displayName); // Установите имя при входе
+		setName(newUser.displayName || undefined); // Установите имя при входе
 	}
 
 	function logoutUser() {

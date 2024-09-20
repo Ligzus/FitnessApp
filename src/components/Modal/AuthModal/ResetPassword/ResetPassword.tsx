@@ -7,9 +7,9 @@ interface ModalProps {
 }
 
 const ResetPassword: React.FC<ModalProps> = ({ closeModal }) => {
-	const [email, setEmail] = useState<string>("");
-	const [message, setMessage] = useState<string>("");
-	const [isEmailSent, setIsEmailSent] = useState<boolean>(false);
+	const [email, setEmail] = useState("");
+	const [message, setMessage] = useState("");
+	const [isEmailSent, setIsEmailSent] = useState(false);
 
 	const handleResetPassword = async (): Promise<void> => {
 		try {
@@ -17,8 +17,10 @@ const ResetPassword: React.FC<ModalProps> = ({ closeModal }) => {
 				setIsEmailSent(true);
 				setMessage(`Ссылка для восстановления пароля отправлена на ${email}`);
 			});
-		} catch (error: any) {
-			setMessage("Произошла ошибка: " + error.message);
+		} catch (error: unknown) {
+			if (error instanceof Error) {
+				setMessage("Произошла ошибка: " + error.message);
+			}
 		}
 	};
 

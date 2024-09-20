@@ -1,24 +1,25 @@
-// CoursePage.test.tsx
+import { render } from '@testing-library/react';
+import { MemoryRouter } from 'react-router-dom';
+import CoursePage from './CoursePage';
+import { useUser } from '../../hooks/useUser';
+import { UserProp } from '../../contexts/user';
 
-import { render } from "@testing-library/react";
-import { BrowserRouter as Router } from "react-router-dom";
-import CoursePage from "./CoursePage";
+// Мокаем хук useUser
+jest.mock('../../hooks/useUser');
 
-// Мокируем хук useUser
-jest.mock("../../hooks/useUser", () => ({
-	useUser: () => ({
-		user: { uid: "test-uid" },
-	}),
-}));
+describe('CoursePage', () => {
+    const mockOpenModal = jest.fn();
 
-describe("CoursePage", () => {
-	it("snapshot", () => {
-		const { asFragment } = render(
-			<Router>
-				<CoursePage openModal={() => {}} />
-			</Router>,
-		);
+    beforeEach(() => {
+        (useUser as jest.Mock).mockReturnValue({ user: null } as UserProp);
+    });
 
-		expect(asFragment()).toMatchSnapshot();
-	});
+    it('snapshot', () => {
+        const { container } = render(
+            <MemoryRouter initialEntries={['/course/ab1c3f']}>
+                <CoursePage openModal={mockOpenModal} />
+            </MemoryRouter>
+        );
+        expect(container).toMatchSnapshot();
+    });
 });

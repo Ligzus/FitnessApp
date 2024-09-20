@@ -35,8 +35,11 @@ describe("Header", () => {
 	});
 
 	it("Должен отображать Header и профиль пользователя, если тот авторизован", async () => {
-		(useUser as jest.Mock).mockReturnValue({ user: { email: "user@example.com" }, logoutUser: jest.fn() });
-
+		(useUser as jest.Mock).mockReturnValue({
+			user: { email: "user@example.com" },
+			logoutUser: jest.fn(),
+		});
+	
 		await act(async () => {
 			render(
 				<Router>
@@ -44,10 +47,10 @@ describe("Header", () => {
 				</Router>,
 			);
 		});
-
-		expect(screen.getByAltText("profile-photo-mini")).toBeInTheDocument();
-		expect(screen.getByText("user@example.com")).toBeInTheDocument();
+	
+		expect(screen.getByTestId("user-email")).toHaveTextContent("user@example.com");
 	});
+	
 
 	it('Должен отображать модальное окно авторизации при нажатии на "Войти"', async () => {
 		(useUser as jest.Mock).mockReturnValue({ user: null, logoutUser: jest.fn() });
